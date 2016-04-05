@@ -4,6 +4,8 @@ option(BUILD_OPENCAL        "Build the OpenCAL serial version"                  
 option(BUILD_OPENCAL_OMP    "Build the OpenCAL-OMP OpenMP parallel version (OpenMP required)"       ON)
 option(BUILD_OPENCAL_CL     "Build the OpenCAL-CL OpenCL parallel version (OpenCL required)"        ON)
 option(BUILD_OPENCAL_GL     "Build the OpenCAL-GL visualization library (OpenGL and GLUT required)" ON)
+option(BUILD_OPENCAL_++     "Build the OpenCAL-GL visualization library (OpenGL and GLUT required)" ON)
+
 
 if(BUILD_OPENCAL)
   add_subdirectory(OpenCAL)
@@ -20,3 +22,7 @@ endif(BUILD_OPENCAL_GL)
 if(BUILD_OPENCAL_CL)
 add_subdirectory(OpenCAL-CL)
 endif(BUILD_OPENCAL_CL)
+
+if(BUILD_OPENCAL_++)
+add_subdirectory(OpenCAL++)
+endif(BUILD_OPENCAL_++)

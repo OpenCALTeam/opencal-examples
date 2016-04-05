@@ -18,7 +18,7 @@ int main()
     start_time = time(NULL);
     sciddicaTModel->sciddicaTRun();
     end_time = time(NULL);
-    printf ("Simulation terminated.\nElapsed time: %d\n", end_time-start_time);
+    printf ("Simulation terminated.\nElapsed time: %ld\n", end_time-start_time);
 
     sciddicaTModel->sciddicaTSaveConfig();
     delete sciddicaTModel;
@@ -26,5 +26,3 @@ int main()
 
     return 0;
 }
-
-
