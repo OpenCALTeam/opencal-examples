@@ -1,4 +1,3 @@
-# opencal/OpenCAL-CL/examples/calcl_mbusu-calcl/CMakeLists.txt
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
 find_package(OpenCAL 1.0 COMPONENTS  OpenCAL OpenCAL-CL  REQUIRED)

@@ -1,7 +1,4 @@
-# opencal/OpenCAL-OMP/examples/CMakeLists.txt
-
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
-
 
 MACRO(SUBDIRLIST result curdir)
   FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
@@ -16,7 +13,7 @@ ENDMACRO()
 
 SUBDIRLIST(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
-#add all subdirectory 
+#add all subdirectory
 FOREACH(subdir ${SUBDIRS})
     ADD_SUBDIRECTORY(${subdir})
 ENDFOREACH()
