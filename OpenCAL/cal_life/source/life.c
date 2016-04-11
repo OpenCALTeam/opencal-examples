@@ -11,7 +11,7 @@ struct CALSubstate2Di* Q;
 struct CALRun2D* life_simulation;
 
 // The cell's transition function
-void life_transition_function(struct CALModel2D* life, int i, int j)
+void lifeTransitionFunction(struct CALModel2D* life, int i, int j)
 {
 	int sum = 0, n;
 	for (n=1; n<life->sizeof_X; n++)
@@ -33,7 +33,7 @@ int main()
 	Q = calAddSubstate2Di(life);
 
 	// add transition function's elementary process
-	calAddElementaryProcess2D(life, life_transition_function);
+	calAddElementaryProcess2D(life, lifeTransitionFunction);
 
 	// set the whole substate to 0
 	calInitSubstate2Di(life, Q, 0);
