@@ -37,7 +37,7 @@ struct sciddicaTParameters {
 struct CALModel2D* sciddicaT;		//the cellular automaton
 struct sciddicaTSubstates Q;		//the substates
 struct sciddicaTParameters P;		//the parameters
-struct CALRun2D* sciddicaTsimulation;	//the simulartion run
+struct CALRun2D* sciddicaT_simulation;	//the simulartion run
 
 
 //------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ struct CALRun2D* sciddicaTsimulation;	//the simulartion run
 //------------------------------------------------------------------------------
 
 //first elementary process
-void sciddicaT_flows_computation(struct CALModel2D* sciddicaT, int i, int j)
+void sciddicaTFlowsComputation(struct CALModel2D* sciddicaT, int i, int j)
 {
 	CALbyte eliminated_cells[5] = { CAL_FALSE, CAL_FALSE, CAL_FALSE, CAL_FALSE, CAL_FALSE };
 	CALbyte again;
@@ -100,7 +100,7 @@ void sciddicaT_flows_computation(struct CALModel2D* sciddicaT, int i, int j)
 }
 
 //second (and last) elementary process
-void sciddicaT_width_update(struct CALModel2D* sciddicaT, int i, int j)
+void sciddicaTWidthUpdate(struct CALModel2D* sciddicaT, int i, int j)
 {
 	CALreal h_next;
 	CALint n;
@@ -160,7 +160,7 @@ void sciddicaTSteering(struct CALModel2D* sciddicaT)
 
 CALbyte sciddicaTSimulationStopCondition(struct CALModel2D* sciddicaT)
 {
-	if (sciddicaTsimulation->step >= STEPS)
+	if (sciddicaT_simulation->step >= STEPS)
 		return CAL_TRUE;
 	return CAL_FALSE;
 }
@@ -171,7 +171,7 @@ void exitFunction()
 	calSaveSubstate2Dr (sciddicaT, Q.h, FINAL);
 
 	// finalizations
-	calRunFinalize2D (sciddicaTsimulation);
+	calRunFinalize2D (sciddicaT_simulation);
 	calFinalize2D (sciddicaT);
 }
 
@@ -190,7 +190,7 @@ int main(int argc, char** argv)
 
 	//cadef and rundef
 	sciddicaT = calCADef2D(ROWS, COLUMNS, CAL_VON_NEUMANN_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_NO_OPT);
-	sciddicaTsimulation = calRunDef2D(sciddicaT, 1, CAL_RUN_LOOP, CAL_UPDATE_IMPLICIT);
+	sciddicaT_simulation = calRunDef2D(sciddicaT, 1, CAL_RUN_LOOP, CAL_UPDATE_IMPLICIT);
 	//add substates
 	Q.z = calAddSubstate2Dr(sciddicaT);
 	Q.h = calAddSubstate2Dr(sciddicaT);
@@ -199,21 +199,21 @@ int main(int argc, char** argv)
 	Q.f[2] = calAddSubstate2Dr(sciddicaT);
 	Q.f[3] = calAddSubstate2Dr(sciddicaT);
 	//add transition function's elementary processes
-	calAddElementaryProcess2D(sciddicaT, sciddicaT_flows_computation);
-	calAddElementaryProcess2D(sciddicaT, sciddicaT_width_update);
+	calAddElementaryProcess2D(sciddicaT, sciddicaTFlowsComputation);
+	calAddElementaryProcess2D(sciddicaT, sciddicaTWidthUpdate);
 
 	//load configuration
 	calLoadSubstate2Dr(sciddicaT, Q.z, DEM);
 	calLoadSubstate2Dr(sciddicaT, Q.h, SOURCE);
 
 	//simulation run setup
-	calRunAddInitFunc2D(sciddicaTsimulation, sciddicaTSimulationInit);
-	calRunInitSimulation2D(sciddicaTsimulation);	//It is required in the case the simulation main loop is explicitated; similarly for calRunFinalizeSimulation2D
-	calRunAddSteeringFunc2D(sciddicaTsimulation, sciddicaTSteering);
-	calRunAddStopConditionFunc2D(sciddicaTsimulation, sciddicaTSimulationStopCondition);
+	calRunAddInitFunc2D(sciddicaT_simulation, sciddicaTSimulationInit);
+	calRunInitSimulation2D(sciddicaT_simulation);	//It is required in the case the simulation main loop is explicitated; similarly for calRunFinalizeSimulation2D
+	calRunAddSteeringFunc2D(sciddicaT_simulation, sciddicaTSteering);
+	calRunAddStopConditionFunc2D(sciddicaT_simulation, sciddicaTSimulationStopCondition);
 
 	// model1 definition
-	model1 = calglDefDrawModel2D(CALGL_DRAW_MODE_SURFACE, "SciddicaT", sciddicaT, sciddicaTsimulation);
+	model1 = calglDefDrawModel2D(CALGL_DRAW_MODE_SURFACE, "SciddicaT", sciddicaT, sciddicaT_simulation);
 	// Add nodes
 	calglAdd2Dr(model1, NULL, &Q.z, CALGL_TYPE_INFO_VERTEX_DATA, CALGL_TYPE_INFO_USE_NO_COLOR, CALGL_DATA_TYPE_STATIC);
 	calglColor2D(model1, 0.5, 0.5, 0.5, 1.0);
@@ -231,7 +231,7 @@ int main(int argc, char** argv)
 	//calglDisplayDrawJBound2D(model1, 300, model1->calModel->columns);
 	//calglHideDrawIBound2D(model1, 100, 150);
 
-	model2 = calglDefDrawModel2D(CALGL_DRAW_MODE_FLAT, "model2", sciddicaT, sciddicaTsimulation);
+	model2 = calglDefDrawModel2D(CALGL_DRAW_MODE_FLAT, "model2", sciddicaT, sciddicaT_simulation);
 	model2->realModel = model1->realModel;
 	calglInfoBar2Dr(model2, Q.h, "Debris thickness", CALGL_TYPE_INFO_USE_RED_SCALE, 20, 200, 50, 150);
 

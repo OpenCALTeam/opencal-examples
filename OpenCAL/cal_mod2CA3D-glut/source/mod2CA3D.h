@@ -15,8 +15,8 @@
 
 
 //cadef and rundef
-extern struct CALModel3D* life3D;
-extern struct CALRun3D* life3Dsimulation;
+extern struct CALModel3D* mod2;
+extern struct CALRun3D* mod2_simulation;
 
 struct life3DSubstates {
 	struct CALSubstate3Db *life;

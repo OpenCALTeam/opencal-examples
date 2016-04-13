@@ -17,7 +17,7 @@ struct CALRun2D* sciddicaTsimulation;				//the simulartion run
 //------------------------------------------------------------------------------
 
 //first elementary process
-void sciddicaT_flows_computation(struct CALModel2D* sciddicaT, int i, int j)
+void sciddicaTFlowsComputation(struct CALModel2D* sciddicaT, int i, int j)
 {
 	CALbyte eliminated_cells[5]={CAL_FALSE,CAL_FALSE,CAL_FALSE,CAL_FALSE,CAL_FALSE};
 	CALbyte again;
@@ -79,7 +79,7 @@ void sciddicaT_flows_computation(struct CALModel2D* sciddicaT, int i, int j)
 }
 
 //second (and last) elementary process
-void sciddicaT_width_update(struct CALModel2D* sciddicaT, int i, int j)
+void sciddicaTWidthUpdate(struct CALModel2D* sciddicaT, int i, int j)
 {
 	CALreal h_next;
 	CALint n;
@@ -91,7 +91,7 @@ void sciddicaT_width_update(struct CALModel2D* sciddicaT, int i, int j)
 	calSet2Dr(sciddicaT, Q.h, i, j, h_next);
 }
 
-void sciddicaT_remove_inactive_cells(struct CALModel2D* sciddicaT, int i, int j)
+void sciddicaTRemoveInactiveCells(struct CALModel2D* sciddicaT, int i, int j)
 {
 #ifdef ACTIVE_CELLS
 	if (calGet2Dr(sciddicaT, Q.h, i, j) <= P.epsilon)
@@ -167,9 +167,9 @@ void sciddicaTCADef()
 	calSetUnsafe2D(sciddicaT);
 
 	//add transition function's elementary processes
-	calAddElementaryProcess2D(sciddicaT, sciddicaT_flows_computation);
-	calAddElementaryProcess2D(sciddicaT, sciddicaT_width_update);
-	calAddElementaryProcess2D(sciddicaT, sciddicaT_remove_inactive_cells);
+	calAddElementaryProcess2D(sciddicaT, sciddicaTFlowsComputation);
+	calAddElementaryProcess2D(sciddicaT, sciddicaTWidthUpdate);
+	calAddElementaryProcess2D(sciddicaT, sciddicaTRemoveInactiveCells);
 
 	//add substates
 	Q.z = calAddSubstate2Dr(sciddicaT);

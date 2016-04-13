@@ -13,7 +13,7 @@
 // declare CA, substate and simulation objects
 struct CALModel3D* mod2;							//the cellular automaton
 struct CALSubstate3Db *Q;							//the substate Q
-struct CALRun3D* mod2simulation;			//the simulartion run
+struct CALRun3D* mod2_simulation;			//the simulartion run
 
 
 // The cell's transition function (first and only elementary process)
@@ -39,7 +39,7 @@ void mod2SimulationInit(struct CALModel3D* ca)
 // Stop condition callback function
 CALbyte mod2SimulationStopCondition(struct CALModel3D* mod2)
 {
-	if (mod2simulation->step >= STEPS)
+	if (mod2_simulation->step >= STEPS)
 		return CAL_TRUE;
 	return CAL_FALSE;
 }
@@ -48,7 +48,7 @@ CALbyte mod2SimulationStopCondition(struct CALModel3D* mod2)
 void exitFunction(void)
 {
 	//finalizations
-	calRunFinalize3D(mod2simulation);
+	calRunFinalize3D(mod2_simulation);
 	calFinalize3D(mod2);
 }
 
@@ -62,21 +62,21 @@ int main(int argc, char** argv)
 
 	//cadef and rundef
 	mod2 = calCADef3D(ROWS, COLS, LAYERS, CAL_MOORE_NEIGHBORHOOD_3D, CAL_SPACE_TOROIDAL, CAL_NO_OPT);
-	mod2simulation = calRunDef3D(mod2, 1, 4001, CAL_UPDATE_IMPLICIT);
+	mod2_simulation = calRunDef3D(mod2, 1, 4001, CAL_UPDATE_IMPLICIT);
 	//add substates
 	Q = calAddSubstate3Db(mod2);
 	//add transition function's elementary processes
 	calAddElementaryProcess3D(mod2, mod2TransitionFunction);
 
 	//simulation run setup
-	calRunAddInitFunc3D(mod2simulation, mod2SimulationInit);
-	calRunInitSimulation3D(mod2simulation);	//It is required in the case the simulation main loop is explicitated; similarly for calRunFinalizeSimulation3D
-	calRunAddStopConditionFunc3D(mod2simulation, mod2SimulationStopCondition);
+	calRunAddInitFunc3D(mod2_simulation, mod2SimulationInit);
+	calRunInitSimulation3D(mod2_simulation);	//It is required in the case the simulation main loop is explicitated; similarly for calRunFinalizeSimulation3D
+	calRunAddStopConditionFunc3D(mod2_simulation, mod2SimulationStopCondition);
 
 	// Initialize the viewer
 	calglInitViewer("mod2 3D CA viewer", 1.0f, 400, 400, 40, 40, CAL_TRUE, 1);
 	//drawModel definition
-	drawModel = calglDefDrawModel3D(CALGL_DRAW_MODE_FLAT, "3D view", mod2, mod2simulation);
+	drawModel = calglDefDrawModel3D(CALGL_DRAW_MODE_FLAT, "3D view", mod2, mod2_simulation);
 	calglAdd3Db(drawModel, NULL, &Q, CALGL_TYPE_INFO_VERTEX_DATA, CALGL_TYPE_INFO_USE_NO_COLOR, CALGL_DATA_TYPE_DYNAMIC);
 	calglColor3D(drawModel, 0.5f, 0.5f, 0.5f, 1.0f);
 	calglAdd3Db(drawModel, Q, &Q, CALGL_TYPE_INFO_COLOR_DATA, CALGL_TYPE_INFO_USE_CURRENT_COLOR, CALGL_DATA_TYPE_DYNAMIC);

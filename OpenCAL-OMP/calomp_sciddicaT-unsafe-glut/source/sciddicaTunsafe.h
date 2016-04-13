@@ -21,7 +21,7 @@
 
 //cadef and rundef
 extern struct CALModel2D* sciddicaT;
-extern struct CALRun2D* sciddicaTsimulation;
+extern struct CALRun2D* sciddicaT_simulation;
 
 
 struct sciddicaTSubstates {

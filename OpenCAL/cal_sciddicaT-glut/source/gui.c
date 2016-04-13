@@ -86,10 +86,10 @@ void simulationRun(void)
 	CALbyte again;
 
   //exectutes the global transition function, the steering function and check for the stop condition.
-	again = calRunCAStep2D(sciddicaTsimulation);
+	again = calRunCAStep2D(sciddicaT_simulation);
 
 	//simulation main loop
-	sciddicaTsimulation->step++;
+	sciddicaT_simulation->step++;
 
 	//check for the stop condition
 	if (!again)
@@ -106,15 +106,15 @@ void simulationRun(void)
 		sciddicaTSaveConfig();
 
 		//graphic rendering
-		printf("step: %d; \tactive cells: %d\r", sciddicaTsimulation->step, sciddicaTsimulation->ca2D->A.size_current);
+		printf("step: %d; \tactive cells: %d\r", sciddicaT_simulation->step, sciddicaT_simulation->ca2D->A.size_current);
 		glutPostRedisplay();
 		return;
 	}
 
 #ifdef VERBOSE
 	//graphic rendering
-	printf("step: %d; \tactive cells: %d\r", sciddicaTsimulation->step, sciddicaTsimulation->ca2D->A.size_current);
-	if (sciddicaTsimulation->step % REFRESH == 0)
+	printf("step: %d; \tactive cells: %d\r", sciddicaT_simulation->step, sciddicaT_simulation->ca2D->A.size_current);
+	if (sciddicaT_simulation->step % REFRESH == 0)
 	glutPostRedisplay();
 #endif
 }

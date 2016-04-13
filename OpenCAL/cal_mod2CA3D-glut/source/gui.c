@@ -43,11 +43,11 @@ void display(void)
 	glPopAttrib();
 
 	glColor3f(1,1,1);
-	for (k=0; k<life3D->slices; k++)
-		for (i=0; i<life3D->rows; i++)
-			for (j=0; j<life3D->columns; j++)
+	for (k=0; k<mod2->slices; k++)
+		for (i=0; i<mod2->rows; i++)
+			for (j=0; j<mod2->columns; j++)
 			{
-				state = calGet3Db(life3D,Q.life,i,j,k);
+				state = calGet3Db(mod2,Q.life,i,j,k);
 				if (state)
 				{
 					glPushMatrix();
@@ -66,10 +66,10 @@ void simulationRun(void)
 	CALbyte again;
 
   //exectutes the global transition function, the steering function and check for the stop condition.
-	again = calRunCAStep3D(life3Dsimulation);
+	again = calRunCAStep3D(mod2_simulation);
 
 	//simulation main loop
-	life3Dsimulation->step++;
+	mod2_simulation->step++;
 
 	//check for the stop condition
 	if (!again)
@@ -82,14 +82,14 @@ void simulationRun(void)
 		printf("Elapsed time: %lds\n", end_time - start_time);
 
 		//graphic rendering
-		printf("step: %d; \tactive cells: %d\r", life3Dsimulation->step, life3Dsimulation->ca3D->A.size_current);
+		printf("step: %d; \tactive cells: %d\r", mod2_simulation->step, mod2_simulation->ca3D->A.size_current);
 		glutPostRedisplay();
 		return;
 	}
 
 #ifdef VERBOSE
 	//graphic rendering
-	printf("step: %d; \tactive cells: %d\r", life3Dsimulation->step, life3Dsimulation->ca3D->A.size_current);
+	printf("step: %d; \tactive cells: %d\r", mod2_simulation->step, mod2_simulation->ca3D->A.size_current);
 	glutPostRedisplay();
 #endif
 }
