@@ -11,7 +11,7 @@
 struct CALModel2D* sciddicaT;						//the cellular automaton
 struct sciddicaTSubstates Q;						//the substates
 struct sciddicaTParameters P;						//the parameters
-struct CALRun2D* sciddicaTsimulation;				//the simulartion run
+struct CALRun2D* sciddicaT_simulation;				//the simulartion run
 
 
 //------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ struct CALRun2D* sciddicaTsimulation;				//the simulartion run
 //------------------------------------------------------------------------------
 
 //transition function
-void sciddicaT_transition_function(struct CALModel2D* sciddicaT, int i, int j)
+void sciddicaTTransitionFunction(struct CALModel2D* sciddicaT, int i, int j)
 {
 	CALbyte eliminated_cells[5]={CAL_FALSE,CAL_FALSE,CAL_FALSE,CAL_FALSE,CAL_FALSE};
 	CALbyte again;
@@ -79,7 +79,7 @@ void sciddicaT_transition_function(struct CALModel2D* sciddicaT, int i, int j)
 		}
 }
 
-void sciddicaT_remove_inactive_cells(struct CALModel2D* sciddicaT, int i, int j)
+void sciddicaTRemoveInactiveCells(struct CALModel2D* sciddicaT, int i, int j)
 {
 #ifdef ACTIVE_CELLS
 	if (calGet2Dr(sciddicaT, Q.h, i, j) <= P.epsilon)
@@ -120,7 +120,7 @@ void sciddicaTSimulationInit(struct CALModel2D* sciddicaT)
 
 CALbyte sciddicaTSimulationStopCondition(struct CALModel2D* sciddicaT)
 {
-	if (sciddicaTsimulation->step >= STEPS)
+	if (sciddicaT_simulation->step >= STEPS)
 		return CAL_TRUE;
 	return CAL_FALSE;
 }
@@ -134,14 +134,14 @@ void sciddicaTCADef()
 {
 	//cadef and rundef
 	sciddicaT = calCADef2D (ROWS, COLS, CAL_VON_NEUMANN_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_OPT_ACTIVE_CELLS);
-	sciddicaTsimulation = calRunDef2D(sciddicaT, 1, CAL_RUN_LOOP, CAL_UPDATE_IMPLICIT);
+	sciddicaT_simulation = calRunDef2D(sciddicaT, 1, CAL_RUN_LOOP, CAL_UPDATE_IMPLICIT);
 
 	//put OpenCAL - OMP in unsafe state execution(to allow unsafe operation to be used)
 	calSetUnsafe2D(sciddicaT);
 
 	//add transition function's elementary processes
-	calAddElementaryProcess2D(sciddicaT, sciddicaT_transition_function);
-	calAddElementaryProcess2D(sciddicaT, sciddicaT_remove_inactive_cells);
+	calAddElementaryProcess2D(sciddicaT, sciddicaTTransitionFunction);
+	calAddElementaryProcess2D(sciddicaT, sciddicaTRemoveInactiveCells);
 
 	//add substates
 	Q.z = calAddSingleLayerSubstate2Dr(sciddicaT);
@@ -151,8 +151,8 @@ void sciddicaTCADef()
 	sciddicaTLoadConfig();
 
 	//simulation run setup
-	calRunAddInitFunc2D(sciddicaTsimulation, sciddicaTSimulationInit); calRunInitSimulation2D(sciddicaTsimulation);
-	calRunAddStopConditionFunc2D(sciddicaTsimulation, sciddicaTSimulationStopCondition);
+	calRunAddInitFunc2D(sciddicaT_simulation, sciddicaTSimulationInit); calRunInitSimulation2D(sciddicaT_simulation);
+	calRunAddStopConditionFunc2D(sciddicaT_simulation, sciddicaTSimulationStopCondition);
 }
 
 //------------------------------------------------------------------------------
@@ -179,6 +179,6 @@ void sciddicaTSaveConfig()
 void sciddicaTExit()
 {
 	//finalizations
-	calRunFinalize2D(sciddicaTsimulation);
+	calRunFinalize2D(sciddicaT_simulation);
 	calFinalize2D(sciddicaT);
 }

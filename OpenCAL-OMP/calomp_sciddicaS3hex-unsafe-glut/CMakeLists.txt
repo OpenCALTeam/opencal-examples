@@ -1,4 +1,3 @@
-# opencal/OpenCAL/examples/calomp_sciddicaS3hex-unsafe-glut/CMakeLists.txt
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 find_package(OpenCAL 1.0 COMPONENTS  OpenCAL-OMP REQUIRED)

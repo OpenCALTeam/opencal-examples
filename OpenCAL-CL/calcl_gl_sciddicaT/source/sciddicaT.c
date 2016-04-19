@@ -219,17 +219,3 @@ int main(int argc, char** argv)
 
 	return 0;
 }
-
-
-// void callback(struct CALModel2D* host_CA) {
-// 	system("clear");
-// printf("********************************************************************");
-// }
-
-//calclBackToHostFunc2D(device_CA,callback,1000);
-
-
-
-//	calclSetKernelArg2D(&kernel_elem_proc_flow_computation, 0, sizeof(CALParameterr), &P.epsilon);
-//	calclSetKernelArg2D(&kernel_elem_proc_flow_computation, 1, sizeof(CALParameterr), &P.r);
-		//calclSetKernelArg2D(&kernel_elem_proc_rm_act_cells, 0, sizeof(CALParameterr), &P.epsilon);

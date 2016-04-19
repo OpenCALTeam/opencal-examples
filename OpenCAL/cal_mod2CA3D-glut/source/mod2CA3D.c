@@ -3,21 +3,21 @@
 #include <stdlib.h>
 
 //-----------------------------------------------------------------------
-//	   THE life3D(oy) cellular automaton definition section
+//	   THE mod2(oy) cellular automaton definition section
 //-----------------------------------------------------------------------
 
 //cadef and rundef
-struct CALModel3D* life3D;							//the cellular automaton
+struct CALModel3D* mod2;							//the cellular automaton
 struct life3DSubstates Q;							//the substate
-struct CALRun3D* life3Dsimulation;					//the simulartion run
+struct CALRun3D* mod2_simulation;					//the simulartion run
 
 
 //------------------------------------------------------------------------------
-//					life3D transition function
+//					mod2 transition function
 //------------------------------------------------------------------------------
 
 //first elementary process
-void life3DTransitionFunction(struct CALModel3D* ca, int i, int j, int k)
+void mod2TransitionFunction(struct CALModel3D* ca, int i, int j, int k)
 {
 	int sum = 0, n;
 
@@ -28,10 +28,10 @@ void life3DTransitionFunction(struct CALModel3D* ca, int i, int j, int k)
 }
 
 //------------------------------------------------------------------------------
-//					life3D simulation functions
+//					mod2 simulation functions
 //------------------------------------------------------------------------------
 
-void life3DSimulationInit(struct CALModel3D* ca)
+void mod2SimulationInit(struct CALModel3D* ca)
 {
 	int i, j, k, state;
 
@@ -42,41 +42,41 @@ void life3DSimulationInit(struct CALModel3D* ca)
 	calSet3Db(ca, Q.life, 12, 12, 12, 1);
 }
 
-CALbyte life3DSimulationStopCondition(struct CALModel3D* life3D)
+CALbyte mod2SimulationStopCondition(struct CALModel3D* mod2)
 {
-	if (life3Dsimulation->step >= STEPS)
+	if (mod2_simulation->step >= STEPS)
 		return CAL_TRUE;
 	return CAL_FALSE;
 }
 
 //------------------------------------------------------------------------------
-//					life3D CADef and runDef
+//					mod2 CADef and runDef
 //------------------------------------------------------------------------------
 
 void life3DCADef()
 {
 	//cadef and rundef
-	life3D = calCADef3D (ROWS, COLS, LAYERS, CAL_MOORE_NEIGHBORHOOD_3D, CAL_SPACE_TOROIDAL, CAL_NO_OPT);
-	life3Dsimulation = calRunDef3D(life3D, 1, CAL_RUN_LOOP, CAL_UPDATE_IMPLICIT);
+	mod2 = calCADef3D (ROWS, COLS, LAYERS, CAL_MOORE_NEIGHBORHOOD_3D, CAL_SPACE_TOROIDAL, CAL_NO_OPT);
+	mod2_simulation = calRunDef3D(mod2, 1, CAL_RUN_LOOP, CAL_UPDATE_IMPLICIT);
 
 	//add transition function's elementary processes
-	calAddElementaryProcess3D(life3D, life3DTransitionFunction);
+	calAddElementaryProcess3D(mod2, mod2TransitionFunction);
 
 	//add substates
-	Q.life = calAddSubstate3Db(life3D);
-		
+	Q.life = calAddSubstate3Db(mod2);
+
 	//simulation run setup
-	calRunAddInitFunc3D(life3Dsimulation, life3DSimulationInit); calRunInitSimulation3D(life3Dsimulation);
-	calRunAddStopConditionFunc3D(life3Dsimulation, life3DSimulationStopCondition);
+	calRunAddInitFunc3D(mod2_simulation, mod2SimulationInit); calRunInitSimulation3D(mod2_simulation);
+	calRunAddStopConditionFunc3D(mod2_simulation, mod2SimulationStopCondition);
 }
 
 //------------------------------------------------------------------------------
-//					life3D finalization function
+//					mod2 finalization function
 //------------------------------------------------------------------------------
 
 void life3DExit()
-{	
+{
 	//finalizations
-	calRunFinalize3D(life3Dsimulation);
-	calFinalize3D(life3D);
+	calRunFinalize3D(mod2_simulation);
+	calFinalize3D(mod2);
 }

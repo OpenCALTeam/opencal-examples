@@ -35,7 +35,7 @@ struct sciddicaTParameters {
 struct CALRun2D* sciddicaT_simulation;
 
 // The sigma_1 elementary process
-void sciddicaT_flows_computation(struct CALModel2D* sciddicaT, int i, int j)
+void sciddicaTFlowsComputation(struct CALModel2D* sciddicaT, int i, int j)
 {
 	CALbyte eliminated_cells[5]={CAL_FALSE,CAL_FALSE,CAL_FALSE,CAL_FALSE,CAL_FALSE};
 	CALbyte again;
@@ -88,7 +88,7 @@ void sciddicaT_flows_computation(struct CALModel2D* sciddicaT, int i, int j)
 }
 
 // The sigma_2 elementary process
-void sciddicaT_width_update(struct CALModel2D* sciddicaT, int i, int j)
+void sciddicaTWidthUpdate(struct CALModel2D* sciddicaT, int i, int j)
 {
 	CALreal h_next;
 	CALint n;
@@ -101,7 +101,7 @@ void sciddicaT_width_update(struct CALModel2D* sciddicaT, int i, int j)
 }
 
 // SciddicaT simulation init function
-void sciddicaT_simulation_init(struct CALModel2D* sciddicaT)
+void sciddicaTSimulationInit(struct CALModel2D* sciddicaT)
 {
 	CALreal z, h;
 	CALint i, j;
@@ -148,8 +148,8 @@ int main()
 	sciddicaT_simulation = calRunDef2D(sciddicaT, 1, STEPS, CAL_UPDATE_IMPLICIT);
 
 	//add transition function's elementary processes
-	calAddElementaryProcess2D(sciddicaT, sciddicaT_flows_computation);
-	calAddElementaryProcess2D(sciddicaT, sciddicaT_width_update);
+	calAddElementaryProcess2D(sciddicaT, sciddicaTFlowsComputation);
+	calAddElementaryProcess2D(sciddicaT, sciddicaTWidthUpdate);
 
 	//add substates
 	Q.z = calAddSubstate2Dr(sciddicaT);
@@ -164,7 +164,7 @@ int main()
 	calLoadSubstate2Dr(sciddicaT, Q.h, SOURCE_PATH);
 
 	//simulation run
-	calRunAddInitFunc2D(sciddicaT_simulation, sciddicaT_simulation_init);
+	calRunAddInitFunc2D(sciddicaT_simulation, sciddicaTSimulationInit);
 	calRunAddSteeringFunc2D(sciddicaT_simulation, sciddicaTSteering);
 	printf ("Starting simulation...\n");
 	start_time = time(NULL);

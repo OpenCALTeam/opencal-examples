@@ -36,7 +36,7 @@ struct CALRun2D* sciddicaT_simulation;
 
 
 // The sciddicaT transition function
-void sciddicaT_flows(struct CALModel2D* sciddicaT, int i, int j)
+void sciddicaTFlowsComputation(struct CALModel2D* sciddicaT, int i, int j)
 {
 	CALbyte eliminated_cells[5]={CAL_FALSE,CAL_FALSE,CAL_FALSE,CAL_FALSE,CAL_FALSE};
 	CALbyte again;
@@ -94,14 +94,14 @@ void sciddicaT_flows(struct CALModel2D* sciddicaT, int i, int j)
 }
 
 
-void sciddicaT_remove_inactive_cells(struct CALModel2D* sciddicaT, int i, int j)
+void sciddicaTRemoveInactiveCells(struct CALModel2D* sciddicaT, int i, int j)
 {
 	if (calGet2Dr(sciddicaT, Q.h, i, j) <= P.epsilon)
 		calRemoveActiveCell2D(sciddicaT,i,j);
 }
 
 
-void sciddicaT_simulation_init(struct CALModel2D* sciddicaT)
+void sciddicaTSimulationInit(struct CALModel2D* sciddicaT)
 {
 	CALreal z, h;
 	CALint i, j;
@@ -140,8 +140,8 @@ int main()
 
 
 	// add transition function's sigma_1 and sigma_2 elementary processes
-	calAddElementaryProcess2D(sciddicaT, sciddicaT_flows);
-	calAddElementaryProcess2D(sciddicaT, sciddicaT_remove_inactive_cells);
+	calAddElementaryProcess2D(sciddicaT, sciddicaTFlowsComputation);
+	calAddElementaryProcess2D(sciddicaT, sciddicaTRemoveInactiveCells);
 
 	// add substates
 	Q.z = calAddSingleLayerSubstate2Dr(sciddicaT);
@@ -152,7 +152,7 @@ int main()
 	calLoadSubstate2Dr(sciddicaT, Q.h, SOURCE_PATH);
 
 	// simulation run
-	calRunAddInitFunc2D(sciddicaT_simulation, sciddicaT_simulation_init);
+	calRunAddInitFunc2D(sciddicaT_simulation, sciddicaTSimulationInit);
 	printf ("Starting simulation...\n");
 	start_time = time(NULL);
 	calRun2D(sciddicaT_simulation);

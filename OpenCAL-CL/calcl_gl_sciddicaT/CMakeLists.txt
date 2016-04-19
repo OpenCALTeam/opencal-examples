@@ -1,4 +1,3 @@
-# opencal/OpenCAL-CL/examples/calgl_cl_sciddicaT-calgl/CMakeLists.txt
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 find_package(OpenCAL 1.0 COMPONENTS  OpenCAL OpenCAL-CL OpenCAL-GL REQUIRED)

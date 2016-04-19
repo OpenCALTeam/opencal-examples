@@ -14,7 +14,7 @@ struct CALSubstate3Db* Q;
 struct CALRun3D* mod2_simulation;
 
 // The cell's transition function
-void mod2_transition_function(struct CALModel3D* ca, int i, int j, int k)
+void mod2TransitionFunction(struct CALModel3D* ca, int i, int j, int k)
 {
 	int sum = 0, n;
 
@@ -34,7 +34,7 @@ int main()
 	Q = calAddSubstate3Db(mod2);
 
 	// add transition function's elementary process
-	calAddElementaryProcess3D(mod2, mod2_transition_function);
+	calAddElementaryProcess3D(mod2, mod2TransitionFunction);
 
 	// set the whole substate to 0
 	calInitSubstate3Db(mod2, Q, 0);
