@@ -8,6 +8,7 @@
 #define KERNEL_LIFE_TRANSITION_FUNCTION "lifeTransitionFunction"
 #define PLATFORM_NUM 0
 #define DEVICE_NUM 0
+#define DEVICE_Q 0
 
 int main()
 {
@@ -18,7 +19,7 @@ int main()
 	CALCLcontext context = calclCreateContext(&device);
 
 	// Load kernels and return a compiled program
-  CALCLprogram program = calclLoadProgram2D(context, device, KERNEL_SRC, NULL);
+    CALCLprogram program = calclLoadProgram2D(context, device, KERNEL_SRC, NULL);
 
 	// Define a host-side CA and declare a substate
 	struct CALModel2D* host_CA = calCADef2D(8, 16, CAL_MOORE_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_NO_OPT);
@@ -38,7 +39,7 @@ int main()
 	calInit2Di(host_CA, Q, 2, 2, 1);
 
 	// Define a device-side CA
-  struct CALCLModel2D * device_CA = calclCADef2D(host_CA, context, program, device);
+    struct CALCLModel2D * device_CA = calclCADef2D(host_CA, context, program, device);
 
 	// Extract a kernel from program
 	CALCLkernel kernel_life_transition_function = calclGetKernelFromProgram(&program, KERNEL_LIFE_TRANSITION_FUNCTION);
@@ -49,8 +50,10 @@ int main()
 	// Save the substate to file
 	calSaveSubstate2Di(host_CA, Q, "./life_0000.txt");
 
+	calclAddReductionSum2Di(device_CA, DEVICE_Q);
+
 	// Run the simulation (actually, only one computational step)
-	calclRun2D(device_CA, 1, 1);
+	calclRun2D(device_CA, 1, 2);
 
 	// Save the substate to file
 	calSaveSubstate2Di(host_CA, Q, "./life_LAST.txt");
