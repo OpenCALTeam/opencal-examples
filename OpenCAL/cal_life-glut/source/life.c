@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2016 OpenCALTeam (https://github.com/OpenCALTeam),
+ * University of Calabria, Italy.
+ *
+ * This file is part of an OpenCAL example.
+ *
+ * OpenCAL is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * OpenCAL is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenCAL. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "life.h"
 #include <math.h>
 #include <stdlib.h>
@@ -23,7 +43,7 @@ void lifeTransitionFunction(struct CALModel2D* ca, int i, int j)
 		calSet2Di(ca, life.Q, i, j, 1);
 	else
 		calSet2Di(ca, life.Q, i, j, 0);
-	
+
 }
 
 //------------------------------------------------------------------------------
@@ -33,7 +53,7 @@ void lifeTransitionFunction(struct CALModel2D* ca, int i, int j)
 void randSimulationInit(struct CALModel2D* ca)
 {
 	CALint i, j, state;
-	
+
 	calInitSubstate2Di(ca, life.Q, STATE_DEAD);
 	int ri=2;
 	int	ci=2;
@@ -64,7 +84,7 @@ void CADef(struct CellularAutomaton* ca)
 	life.run = calRunDef2D(life.model, 1, CAL_RUN_LOOP, CAL_UPDATE_IMPLICIT);
 	//add substates
 	life.Q = calAddSubstate2Di(life.model);
-	
+
 	//add transition function's elementary processes
 	calAddElementaryProcess2D(life.model, lifeTransitionFunction);
 
@@ -78,7 +98,7 @@ void Init(struct CellularAutomaton* ca)
 }
 
 void isoExit(struct CellularAutomaton* ca)
-{	
+{
 	//finalizations
 	calRunFinalize2D(ca->run);
 	calFinalize2D(ca->model);

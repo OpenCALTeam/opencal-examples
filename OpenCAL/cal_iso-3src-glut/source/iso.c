@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2016 OpenCALTeam (https://github.com/OpenCALTeam),
+ * University of Calabria, Italy.
+ *
+ * This file is part of an OpenCAL example.
+ *
+ * OpenCAL is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * OpenCAL is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenCAL. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "iso.h"
 #include <math.h>
 #include <stdlib.h>
@@ -111,7 +131,7 @@ void isoSignalDiffusion(struct CALModel2D* iso, int i, int j)
 		if (count > 1)
 #else
 		if (count > (ca[currentAC].initial_sources<=2?1:2))
-#endif	
+#endif
 			to_update = CAL_TRUE;
 		else
 		{
@@ -136,10 +156,10 @@ void isoSignalDiffusion(struct CALModel2D* iso, int i, int j)
 				{
 					d = sqrt( (double)(i-sources_coords[n].row)*(i-sources_coords[n].row) + (double)(j-sources_coords[n].col)*(j-sources_coords[n].col) );
 					inv_d = 1 / d;
-					
+
 					sum_u += calGetX2Dr(iso, ca[currentAC].Q.value, i, j, n) * pow(inv_d,exponent);
 					sum_inv_d += pow(inv_d,exponent);
-					
+
 					/*sum_u += calGetX2Dr(iso, Q.value, i, j, n);
 					sum_inv_d++;*/
 				}
@@ -167,7 +187,7 @@ void isoSignalDiffusion(struct CALModel2D* iso, int i, int j)
 
 void isoFixBoundLocally(struct CALModel2D* iso, int i, int j)
 {
-	if (i>0 && i<iso->rows-1 && j==0) 
+	if (i>0 && i<iso->rows-1 && j==0)
 		calSet2Dr(iso,ca[currentAC].Q.value,i,0,calGet2Dr(iso,ca[currentAC].Q.value,i,1));
 
 	if (i>0 && i<iso->rows-1 && j==iso->columns-1)
@@ -259,12 +279,12 @@ void isoFixUnsteady3(struct CALModel2D* iso, int i, int j)
 				if (not_yet_considered(c, sources_coords, iso->sizeof_X)) {
 					sources_coords[n].row = c.row;
 					sources_coords[n].col = c.col;
-					
+
 					count++;
 				}
 			}
 		}
-		
+
 		if (count > 2)
 		{
 			for (n=1; n<iso->sizeof_X; n++)
@@ -273,10 +293,10 @@ void isoFixUnsteady3(struct CALModel2D* iso, int i, int j)
 				{
 					d = sqrt( (double)(i-sources_coords[n].row)*(i-sources_coords[n].row) + (double)(j-sources_coords[n].col)*(j-sources_coords[n].col) );
 					inv_d = 1 / d;
-					
+
 					sum_u += calGetX2Dr(iso, ca[currentAC].Q.value, i, j, n) * pow(inv_d,exponent);
 					sum_inv_d += pow(inv_d,exponent);
-					
+
 					/*sum_u += calGetX2Dr(iso, Q.value, i, j, n);
 					sum_inv_d++;*/
 				}
@@ -365,7 +385,7 @@ void isoIverseDistanceWeighting(struct CALModel2D* iso)
 {
 	CALint i, j, k, l;
 	CALreal inv_d, sum_inv_d, sum_u;
-	
+
 	for (i=0; i<iso->rows; i++)
 		for (j=0; j<iso->columns; j++)
 			if (calGet2Db(iso,ca[currentAC].Q.state,i,j) == BLANK)
@@ -395,7 +415,7 @@ CALbyte isoSimulationStopCondition(struct CALModel2D* iso)
 #ifdef DEBUG
 	return CAL_TRUE;
 #endif
-	
+
 	value = calGet2Dr(iso,ca[currentAC].Q.value,istart,jstart);
 	for (i=istart; i<istop; i++)
 		for (j=jstart; j<jstop; j++)
@@ -473,7 +493,7 @@ void isoSaveConfig(struct CellularAutomata* ca)
 //------------------------------------------------------------------------------
 
 void isoExit(struct CellularAutomata* ca)
-{	
+{
 	//finalizations
 	calRunFinalize2D(ca->isoRun);
 	calFinalize2D(ca->iso);

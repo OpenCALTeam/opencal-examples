@@ -1,8 +1,28 @@
+/*
+ * Copyright (c) 2016 OpenCALTeam (https://github.com/OpenCALTeam),
+ * University of Calabria, Italy.
+ *
+ * This file is part of an OpenCAL example.
+ *
+ * OpenCAL is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * OpenCAL is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenCAL. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef zhaborinsky_h
 #define zhaborinsky_h
 
 /*! \brief Introduction.
- *         
+ *
  *
  *  Appeared in "Computer Recreations" section of the August 1988 issue of Scientific American (Professor A. K. Dewdney). Cells could be in any of n+1 states, where a cell in state 0 is "healthy", a cell in state n is "ill" and a cell in any intermediate state is "infected"
 
@@ -12,12 +32,12 @@ This cellular automaton provides an illustration of order emerging "spontaneousl
  */
 
 
-/** RULES. 
+/** RULES.
 (i) If the cell is healthy (i.e., in state 0) then its new state is [a/k1] + [b/k2], where a is the number of infected cells among its eight neighbors, b is the number of ill cells among its neighbors, and k1 and k2 are constants. Here "[]" means the integer part of the number enclosed, so that, for example, [7/3] = [2+1/3] = 2.
 
 (ii) If the cell is ill (i.e., in state n) then it miraculously becomes healthy (i.e., its state becomes 0).
 
-(iii) If the cell is infected (i.e., in a state other than 0 and n) then its new state is [s/(a+b+1)] + g, where a and b are as above, s is the sum of the states of the cell and of its neighbors and g is a constant. 
+(iii) If the cell is infected (i.e., in a state other than 0 and n) then its new state is [s/(a+b+1)] + g, where a and b are as above, s is the sum of the states of the cell and of its neighbors and g is a constant.
 
  Rule (iii) can be seen as stating that the new state of a cell is the average of its state and its neighbors states plus a constant which may be thought of as the tendency of the infection to spread.
 
@@ -52,4 +72,3 @@ void Init(struct CellularAutomaton* ca);
 void isoExit(struct CellularAutomaton* ca);
 
 #endif
-

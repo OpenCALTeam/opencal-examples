@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2016 OpenCALTeam (https://github.com/OpenCALTeam),
+ * University of Calabria, Italy.
+ *
+ * This file is part of an OpenCAL example.
+ *
+ * OpenCAL is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * OpenCAL is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenCAL. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,7 +55,7 @@ void ConfigurationIdPath(char config_file_path[], char config_id_str[])
 			pos = i;
 			break;
 		}
-	
+
 	if (pos == 0)
 		strcpy(config_id_str, "\0");
 	else
@@ -49,9 +69,9 @@ void ConfigurationFilePath(char config_file_path[], char name[], char suffix[], 
 {
     /*
       La funzione costruisce in file_path il percorso completo del filada aprire:
-      config_file_path è il percorso completo del file di configurazione. Es: curti_000000000000.cfg
-      name è il nome del sottostato da aprire. Es: Morphology
-      suffix è l'estensione del file da aprire. Es: .stt oppure .txt
+      config_file_path ï¿½ il percorso completo del file di configurazione. Es: curti_000000000000.cfg
+      name ï¿½ il nome del sottostato da aprire. Es: Morphology
+      suffix ï¿½ l'estensione del file da aprire. Es: .stt oppure .txt
 
     */
     strcpy(file_path, "\0");            //inizializza file_path alla stringa vuota
@@ -92,9 +112,9 @@ bool ConfigurationFileSavingPath(char config_file_path[], int step, char name[],
 		ps[lps-lp] = '\0';              //scarta gli ultimi lp caratteri della stringa ps = "000000000"
 		strcat(ps, p);                  //ps = ps + p. Es. ps = "000000000345"
 		strcat(file_path, ps);          //file_path = file_path + ps. Es: "c:\\simulazioni\\curti_000000000345"
-		
+
 	}
-    if (strcmp(name, ""))               //se name non è la stringa vuota
+    if (strcmp(name, ""))               //se name non ï¿½ la stringa vuota
 	{
 		strcat(file_path, "_");			//file_path = file_path + "_". Es: "c:\\simulazioni\\curti_000000000345_"
 		strcat(file_path, name);        //file_path = file_path + name. Es: "c:\\simulazioni\\curti_000000000345_Morphology"

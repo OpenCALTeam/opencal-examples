@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2016 OpenCALTeam (https://github.com/OpenCALTeam),
+ * University of Calabria, Italy.
+ *
+ * This file is part of an OpenCAL example.
+ *
+ * OpenCAL is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * OpenCAL is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenCAL. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "sciddicaS3Hex.h"
 
 #include <OpenCAL-OMP/cal2DUnsafe.h>
@@ -142,10 +162,10 @@ void s3hexFlowsComputation(struct CALModel2D* s3hex, int i, int j)
 		{
           h = h_0 * ((average-u[n])/sum) * P.r;
           p = (z_0_plus_runup_0 - u[n])*h;
-            
+
           h0_out += h;
           p0_out += runup_0*h;
-          
+
           calSet2Dr(s3hex, Q.fh[n], i, j, h);
           calSet2Dr(s3hex, Q.fp[n], i, j, p);
 
@@ -228,7 +248,7 @@ void s3hexRomoveInactiveCells(struct CALModel2D* s3hex, int i, int j)
 void sciddicaTSimulationInit(struct CALModel2D* s3hex)
 {
   int i, j, n;
-	
+
     //s3hex parameters setting
 	P.adh = P_ADH;
 	P.rl = P_RL;
@@ -273,7 +293,7 @@ void sciddicaTCADef()
 {
   int n;
   CALbyte optimization_type = CAL_NO_OPT;
-  
+
 #ifdef ACTIVE_CELLS
   optimization_type = CAL_OPT_ACTIVE_CELLS;
 #endif

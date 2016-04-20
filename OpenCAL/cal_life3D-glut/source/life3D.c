@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2016 OpenCALTeam (https://github.com/OpenCALTeam),
+ * University of Calabria, Italy.
+ *
+ * This file is part of an OpenCAL example.
+ *
+ * OpenCAL is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * OpenCAL is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenCAL. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "life3D.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -75,7 +95,7 @@ void life3DSimulationInit(struct CALModel3D* ca)
 		for(j=0;j<ca->columns;j++)
 			for(k=0;k<ca->slices;k++)
 				calSet3Db(ca, Q.life, i, j, k, nextBool(0.01));
-			
+
 }
 
 CALbyte life3DSimulationStopCondition(struct CALModel3D* life3D)
@@ -100,7 +120,7 @@ void life3DCADef()
 
 	//add substates
 	Q.life = calAddSubstate3Db(life3D);
-		
+
 	//simulation run setup
 	calRunAddInitFunc3D(life3Dsimulation, life3DSimulationInit); calRunInitSimulation3D(life3Dsimulation);
 	calRunAddStopConditionFunc3D(life3Dsimulation, life3DSimulationStopCondition);
@@ -111,7 +131,7 @@ void life3DCADef()
 //------------------------------------------------------------------------------
 
 void life3DExit()
-{	
+{
 	//finalizations
 	calRunFinalize3D(life3Dsimulation);
 	calFinalize3D(life3D);
