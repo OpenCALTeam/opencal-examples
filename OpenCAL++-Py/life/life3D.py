@@ -1,3 +1,24 @@
+ #
+ # Copyright (c) 2016 OpenCALTeam (https://github.com/OpenCALTeam),
+ # University of Calabria, Italy.
+ #
+ # This file is part of an OpenCAL example.
+ #
+ # OpenCAL is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as
+ # published by the Free Software Foundation, either version 3 of
+ # the License, or (at your option) any later version.
+ #
+ # OpenCAL is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with OpenCAL. If not, see <http://www.gnu.org/licenses/>.
+ #
+
+
 from opencal import *
 from OpenGL.GL import *
 from OpenGL.GLUT import *
@@ -34,14 +55,14 @@ class Life_stop_condition(StopConditionFunction3D):
 		global step
 		global stepLimit
 		step=step+1;
-		return step>=stepLimit;		
+		return step>=stepLimit;
 
 class Life_init_function(CalModelFunctor3D):
-		
+
 	def run(SELF,model):
 		ri=2
 		ci=2
-		zi=2			
+		zi=2
 		global Q
 		calInitSubstate3Di(life3D, Q, 0);
 		calInit3Di(model, Q, 0+ri, 2+ci,zi, 1);
@@ -55,7 +76,7 @@ class Life_init_function(CalModelFunctor3D):
 def lifeCADef():
 		global model_view
 		model_view = ModelView(0,0,0)
-		global life3D		
+		global life3D
 		life3D = calCADef3D (65, 65,65, CAL_MOORE_NEIGHBORHOOD_3D, CAL_SPACE_TOROIDAL, CAL_NO_OPT)
 		print("START function life")
 		#define CARUN
@@ -72,19 +93,19 @@ def lifeCADef():
 		#define the initialization function
 		global life_init_function
 		life_init_function = Life_init_function();
-		
+
 		calRunAddInitFunc3D(life_simulation, life_init_function);
-		
+
 
 		#add substates
 		global Q
 		Q = calAddSubstate3Di(life3D);
-		
-		"""initialize the cellular autopmata with the first configuration	
+
+		"""initialize the cellular autopmata with the first configuration
 		Remember that everything it is used within this function should be
 		allocated and initializated."""
-		calRunInitSimulation3D(life_simulation);	
-		
+		calRunInitSimulation3D(life_simulation);
+
 
 
 def init():
@@ -101,7 +122,7 @@ def init():
 	glClearColor (0.0, 0.0, 0.0, 0.0);
 	glShadeModel (GL_FLAT);
 	glEnable (GL_DEPTH_TEST);
-	
+
 	print("The life 3D cellular automata model");
 	print("Left click on the graphic window to start the simulation");
 	print("Right click on the graphic window to stop the simulation");
@@ -124,7 +145,7 @@ def mouse(button,state,x,y):
 	if (button == GLUT_LEFT_BUTTON ):
 		if (state == GLUT_DOWN):
 			glutIdleFunc(simulationRun);
-		elif (button == GLUT_RIGHT_BUTTON): 
+		elif (button == GLUT_RIGHT_BUTTON):
 			if (state == GLUT_DOWN):
 				glutIdleFunc(None);
 
@@ -134,9 +155,9 @@ def simulationRun():
 	life_simulation.step=life_simulation.step+1;
 	print ('%i') % (life_simulation.step),
 	sys.stdout.flush()
-	
-	again=False;	
-	if not(life_simulation is None):	
+
+	again=False;
+	if not(life_simulation is None):
 		again = calRunCAStep3D(life_simulation);
 		if (not again):
 			glutIdleFunc(None);
@@ -157,26 +178,26 @@ def display():
 	glTranslatef(0, 0, model_view.z_trans);
 	glRotatef(model_view.x_rot, 1, 0, 0);
 	glRotatef(model_view.y_rot, 0, 1, 0);
-	
+
 	#Save the lighting state variables
-	glPushAttrib(GL_LIGHTING_BIT);	
+	glPushAttrib(GL_LIGHTING_BIT);
 	glDisable(GL_LIGHTING);
 	glPushMatrix();
 	glColor3f(0,1,0);
 	ROWS=life3D.rows
 	COLS=life3D.columns
-	LAYERS=life3D.slices	
+	LAYERS=life3D.slices
 	glScalef(ROWS, COLS, LAYERS);
 	glutWireCube(1.0);
 	glPopMatrix();
 	#Restore lighting state variables
-	glPopAttrib();	
+	glPopAttrib();
 
-	glColor3f(1,1,1);	
+	glColor3f(1,1,1);
 
 	for i in range(0,life3D.rows):
 		for j in range(0,life3D.columns):
-			for k in range (0,life3D.slices):							
+			for k in range (0,life3D.slices):
 				state = calGet3Di(life3D,Q,i,j,k);
 				if state ==1:
 					glPushMatrix();
@@ -186,13 +207,13 @@ def display():
 
 	glPopMatrix();
 	glutSwapBuffers();
-	
-	
+
+
 
 
 def reshape(w,h):
-	
-	global life3D	
+
+	global life3D
 	MAX = life3D.rows;
 
 	if (MAX < life3D.columns):
@@ -205,7 +226,7 @@ def reshape(w,h):
 	glViewport (0, 0,  w,  h);
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity();
-	
+
 	HH=float(w)/float(h);
 	gluPerspective(45.0, HH, 1.0, 4*MAX);
 	glMatrixMode(GL_MODELVIEW);
@@ -234,26 +255,24 @@ def specialKeys(key,x,y):
 def main():
 	global life_simulation;
 	lifeCADef();
-	
+
 	glutInit(sys.argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(640, 480); 
+	glutInitWindowSize(640, 480);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("openCAL++-PY life3D-glut");
-	
-	
-	init();		
-	
-	
-	glutDisplayFunc(display); 
-	glutReshapeFunc(reshape); 
+
+
+	init();
+
+
+	glutDisplayFunc(display);
+	glutReshapeFunc(reshape);
 	glutSpecialFunc(specialKeys);
-	glutMouseFunc(mouse);	
-	
+	glutMouseFunc(mouse);
+
 	glutMainLoop();
-	
+
 	life3DExit();
 	return
 main();
-	
-

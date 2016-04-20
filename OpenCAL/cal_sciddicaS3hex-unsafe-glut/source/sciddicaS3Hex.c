@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2016 OpenCALTeam (https://github.com/OpenCALTeam),
+ * University of Calabria, Italy.
+ *
+ * This file is part of an OpenCAL example.
+ *
+ * OpenCAL is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * OpenCAL is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenCAL. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "sciddicaS3Hex.h"
 
 #include <OpenCAL/cal2DUnsafe.h>
@@ -82,7 +102,7 @@ void s3hexFlowsComputation(struct CALModel2D* s3hex, int i, int j)
 	CALreal z_0, h_0, z_n, h_n, runup_0, z_0_plus_runup_0, sum;
 	CALreal f;
 
-	
+
 	if (calGet2Dr(s3hex,Q.h,i,j) <= P.adh)
 		return;
 
@@ -128,7 +148,7 @@ void s3hexFlowsComputation(struct CALModel2D* s3hex, int i, int j)
 					again=CAL_TRUE;
 				}
 
-	}while (again); 
+	}while (again);
 
 
 	sum = 0;
@@ -150,7 +170,7 @@ void s3hexFlowsComputation(struct CALModel2D* s3hex, int i, int j)
 #ifdef ACTIVE_CELLS
 			//adds the cell (i, j, n) to the set of active ones
             calAddActiveCellX2D(s3hex, i, j, n);
-#endif		
+#endif
 		}
 }
 
@@ -201,7 +221,7 @@ void sciddicaTSimulationInit(struct CALModel2D* s3hex)
 	//initializing debris source
 	calInitSubstate2Dr(s3hex, Q.h, 0);
 	calInitSubstate2Dr(s3hex, Q.p, 0);
-	
+
 #ifdef ACTIVE_CELLS
 	for (i=0; i<s3hex->rows; i++)
 		for (j=0; j<s3hex->columns; j++)
@@ -237,8 +257,8 @@ void sciddicaTCADef()
 	calAddElementaryProcess2D(s3hex, s3hexFlowsComputation);
 	calAddElementaryProcess2D(s3hex, s3hexRomoveInactiveCells);
 	calAddElementaryProcess2D(s3hex, s3hexEnergyLoss);
-	
-	
+
+
 	//add substates
 	Q.z = calAddSingleLayerSubstate2Dr(s3hex);
 	Q.d = calAddSingleLayerSubstate2Dr(s3hex);
@@ -277,7 +297,7 @@ void sciddicaTSaveConfig()
 
 
 void sciddicaTExit()
-{	
+{
 	//finalizations
 	calRunFinalize2D(s3hexSimulation);
 	calFinalize2D(s3hex);
