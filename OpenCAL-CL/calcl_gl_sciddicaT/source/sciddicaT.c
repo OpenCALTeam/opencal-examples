@@ -204,7 +204,7 @@ int main(int argc, char** argv)
 	calglAdd2Dr(render_3D, Q.z, &Q.h, CALGL_TYPE_INFO_VERTEX_DATA, CALGL_TYPE_INFO_USE_NO_COLOR, CALGL_DATA_TYPE_DYNAMIC);
 	calglAdd2Dr(render_3D, Q.h, &Q.h, CALGL_TYPE_INFO_COLOR_DATA, CALGL_TYPE_INFO_USE_RED_YELLOW_SCALE, CALGL_DATA_TYPE_DYNAMIC);
 	calglAdd2Dr(render_3D, Q.h, &Q.h, CALGL_TYPE_INFO_NORMAL_DATA, CALGL_TYPE_INFO_USE_NO_COLOR, CALGL_DATA_TYPE_DYNAMIC);
-	calglSetHeightOffset2D(render_3D,100);
+	calglSetHeightOffset2D(render_3D,10);
 
 	// Scalar bar
 	calglInfoBar2Dr(render_3D, Q.h, "Debris thickness", CALGL_TYPE_INFO_USE_RED_SCALE, 20, 120, 300, 40);

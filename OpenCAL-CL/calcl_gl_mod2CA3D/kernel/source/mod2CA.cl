@@ -7,7 +7,7 @@ __kernel void mod2TransitionFunction(__CALCL_MODEL_3D)
 	calclThreadCheck3D();
 
 	int i = calclGlobalRow();
-	int j = calclGlobalColumns();
+	int j = calclGlobalColumn();
 	int k = calclGlobalSlice();
 
 	int sum = 0, n;

@@ -7,7 +7,7 @@ __kernel void flowsComputation(__CALCL_MODEL_2D, __global CALParameterr * Pepsil
 	calclThreadCheck2D();
 
 	int i = calclGlobalRow();
-	int j = calclGlobalColumns();
+	int j = calclGlobalColumn();
 
 	CALbyte eliminated_cells[5] = { CAL_FALSE, CAL_FALSE, CAL_FALSE, CAL_FALSE, CAL_FALSE };
 	CALbyte again;
@@ -67,7 +67,7 @@ __kernel void widthUpdate(__CALCL_MODEL_2D)
 	calclThreadCheck2D();
 
 	int i = calclGlobalRow();
-	int j = calclGlobalColumns();
+	int j = calclGlobalColumn();
 
 	CALreal h_next;
 	CALint n;
@@ -89,8 +89,11 @@ __kernel void steering(__CALCL_MODEL_2D)
 	CALint rows_ = calclGetRows();
 
 	int i = calclGlobalRow();
-	int j = calclGlobalColumns();
+	int j = calclGlobalColumn();
 	int s;
-	for (s = 0; s < NUMBER_OF_OUTFLOWS; ++s)
-		calclInitSubstate2Dr(MODEL_2D, s, i, j, 0);
+//	for (s = 0; s < NUMBER_OF_OUTFLOWS; ++s)
+		calclInitSubstate2Dr(MODEL_2D, 0, i, j, 0);
+		calclInitSubstate2Dr(MODEL_2D, 1, i, j, 0);
+		calclInitSubstate2Dr(MODEL_2D, 2, i, j, 0);
+		calclInitSubstate2Dr(MODEL_2D, 3, i, j, 0);
 }

@@ -18,6 +18,7 @@
 #include "MbusuCL.h"
 extern "C"{
 #include <OpenCAL-CL/calcl3D.h>
+#include <OpenCAL-CL/calcl3DReduction.h>
 }
 #define STEPS 0
 #include <time.h>
@@ -32,7 +33,7 @@ int active;
 time_t start_time, end_time;
 
 void setParameters(){
-	mbusu->parameters.ascii_output_time_step = 8;				//[s] in seconds
+	mbusu->parameters.ascii_output_time_step = 84000;				//[s] in seconds
 	mbusu->parameters.lato = 5.0;
 	mbusu->parameters.delta_t = 10.0;
 	mbusu->parameters.delta_t_cum = 0.0;
@@ -91,6 +92,9 @@ int main(int argc, char** argv) {
 	calclAddStopConditionFunc3D(device_CA, &kernel_stop_condition);
 
 	start_time = time(NULL);
+
+	calclAddReductionMin3Dr(device_CA,6);
+
 	calclRun3D(device_CA, 1, STEPS);
 	end_time = time(NULL);
 

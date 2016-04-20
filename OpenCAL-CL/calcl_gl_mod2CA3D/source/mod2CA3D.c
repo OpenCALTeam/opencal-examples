@@ -71,20 +71,19 @@ int main(int argc, char** argv)
 	calSaveSubstate3Db(host_CA, Q, "./mod2_0000.txt");
 
 	// Define a device-side CA
-  device_CA = calclCADef3D(host_CA, context, program, device);
+	device_CA = calclCADef3D(host_CA, context, program, device);
 
-  // Register a transition function's elementary process kernel
+    // Register a transition function's elementary process kernel
 	CALCLkernel kernel_transition_function = calclGetKernelFromProgram(&program, KERNEL_LIFE_TRANSITION_FUNCTION);
 
 	// Add transition function's elementary process
 	calclAddElementaryProcess3D(device_CA, &kernel_transition_function);
 
-
 	// Initialize the viewer
 	calglInitViewer("mod2 3D CA viewer", 1.0f, 400, 400, 40, 40, CAL_TRUE, 100);
 
 	//drawModel definition
-	struct CALGLRun3D * calUpdater = calglRunCLDef3D(device_CA,100,1,4000);
+	struct CALGLRun3D * calUpdater = calglRunCLDef3D(device_CA,100,1,0);
 	drawModel = calglDefDrawModelCL3D(CALGL_DRAW_MODE_FLAT, "3D view", host_CA, calUpdater);
 	calglAdd3Db(drawModel, NULL, &Q, CALGL_TYPE_INFO_VERTEX_DATA, CALGL_TYPE_INFO_USE_NO_COLOR, CALGL_DATA_TYPE_DYNAMIC);
 	calglColor3D(drawModel, 0.5f, 0.5f, 0.5f, 1.0f);

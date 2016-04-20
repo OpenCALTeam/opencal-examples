@@ -23,7 +23,7 @@ __kernel void updateVentsEmission(__CALCL_MODEL_2D, __global Vent* vents, __glob
 
 	int threadID = calclGlobalRow();
 	int i = calclActiveCellRow(threadID);
-	int j = calclActiveCellColumns(threadID);
+	int j = calclActiveCellColumn(threadID);
 
 	CALreal emitted_lava = 0;
 
@@ -119,7 +119,7 @@ __kernel void empiricalFlows(__CALCL_MODEL_2D, Parameters parameters) {
 
 	int threadID = calclGlobalRow();
 	int i = calclActiveCellRow(threadID);
-	int j = calclActiveCellColumns(threadID);
+	int j = calclActiveCellColumn(threadID);
 
 	if (calclGet2Dr(MODEL_2D, SLT, i, j) > 0) {
 		CALreal f[MOORE_NEIGHBORS];
@@ -139,7 +139,7 @@ __kernel void width_update(__CALCL_MODEL_2D) {
 
 	int threadID = calclGlobalRow();
 	int i = calclActiveCellRow(threadID);
-	int j = calclActiveCellColumns(threadID);
+	int j = calclActiveCellColumn(threadID);
 
 	CALint outFlowsIndexes[NUMBER_OF_OUTFLOWS] = { 3, 2, 1, 0, 6, 7, 4, 5 };
 	CALint n;
@@ -177,7 +177,7 @@ __kernel void updateTemperature(__CALCL_MODEL_2D, __global CALbyte * Mb, __globa
 
 	int threadID = calclGlobalRow();
 	int i = calclActiveCellRow(threadID);
-	int j = calclActiveCellColumns(threadID);
+	int j = calclActiveCellColumn(threadID);
 
 	CALreal aus = 0;
 	CALreal sh = calclGet2Dr(MODEL_2D, SLT, i, j);
@@ -205,7 +205,7 @@ __kernel void removeActiveCells(__CALCL_MODEL_2D, __global CALbyte * Mb, Paramet
 
 	int threadID = calclGlobalRow();
 	int i = calclActiveCellRow(threadID);
-	int j = calclActiveCellColumns(threadID);;
+	int j = calclActiveCellColumn(threadID);;
 
 	CALreal st = calclGet2Dr(MODEL_2D, ST, i, j);
 	if (st <= parameters.PTsol && calclGetBufferElement2D(Mb, calclGetColumns(), i, j) == CAL_FALSE)
@@ -220,7 +220,7 @@ __kernel void stopCondition(__CALCL_MODEL_2D, Parameters parameters, __global CA
 
 	int threadID = calclGlobalRow();
 	int i = calclActiveCellRow(threadID);
-	int j = calclActiveCellColumns(threadID);
+	int j = calclActiveCellColumn(threadID);
 
 	if (threadID == 0){
 		if (*elapsed_time >= parameters.effusion_duration)
@@ -234,7 +234,7 @@ __kernel void steering(__CALCL_MODEL_2D, __global CALbyte * Mb, Parameters param
 
 	int threadID = calclGlobalRow();
 	int i = calclActiveCellRow(threadID);
-	int j = calclActiveCellColumns(threadID);
+	int j = calclActiveCellColumn(threadID);
 
 	for (int k = 0; k < NUMBER_OF_OUTFLOWS; ++k)
 		calclInitSubstate2Dr(MODEL_2D, F(k), i, j,0);

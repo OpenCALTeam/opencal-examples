@@ -9,7 +9,7 @@ __kernel void flowsComputation(__CALCL_MODEL_2D, __global CALParameterr * Pepsil
 
 	int threadID = calclGlobalRow();
 	int i = calclActiveCellRow(threadID);
-	int j = calclActiveCellColumns(threadID);
+	int j = calclActiveCellColumn(threadID);
 
 	CALbyte eliminated_cells[5] = { CAL_FALSE, CAL_FALSE, CAL_FALSE, CAL_FALSE, CAL_FALSE };
 	CALbyte again;
@@ -76,7 +76,7 @@ __kernel void widthUpdate(__CALCL_MODEL_2D)
 
 	int threadID = calclGlobalRow();
 	int i = calclActiveCellRow(threadID);
-	int j = calclActiveCellColumns(threadID);
+	int j = calclActiveCellColumn(threadID);
 
 	CALreal h_next;
 	CALint n;
@@ -96,7 +96,7 @@ __kernel void removeInactiveCells(__CALCL_MODEL_2D, __global CALParameterr * Pep
 
 	int threadID = calclGlobalRow();
 	int i = calclActiveCellRow(threadID);
-	int j = calclActiveCellColumns(threadID);
+	int j = calclActiveCellColumn(threadID);
 
 	if (calclGet2Dr(MODEL_2D, H, i, j) <= *Pepsilon)
 		calclRemoveActiveCell2D(MODEL_2D,i,j);

@@ -10,7 +10,7 @@ __kernel void lifeTransitionFunction(__CALCL_MODEL_2D)
 	calclThreadCheck2D();
 	
 	int i = calclGlobalRow();
-	int j = calclGlobalColumns();
+	int j = calclGlobalColumn();
 	
 	if(i==0 && j==0) 	
 		printf("sum = %f \n", calclGetSum2Di(DEVICE_Q));

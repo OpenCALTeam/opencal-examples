@@ -19,7 +19,7 @@ __kernel void mbusuTransitionFunction(__CALCL_MODEL_3D, __global Parameters* par
 	calclThreadCheck3D();
 
 	int _i = calclGlobalRow();
-	int _j = calclGlobalColumns();
+	int _j = calclGlobalColumn();
 	int _k = calclGlobalSlice();
 	int _k_inv;
 
@@ -32,6 +32,8 @@ __kernel void mbusuTransitionFunction(__CALCL_MODEL_3D, __global Parameters* par
 	double convergence;
 	double teta_start, denom_pow_start, moist_diff;
 	double temp_value;
+	
+		
 
 	volume = parameters->lato*parameters->lato*parameters->lato;
 	_k_inv = (calclGetSlices() - 1) - _k;
@@ -165,25 +167,17 @@ __kernel void steering(__CALCL_MODEL_3D, __global Parameters* parameters) {
 	calclThreadCheck3D();
 
 	int i = calclGlobalRow();
-	int j = calclGlobalColumns();
+	int j = calclGlobalColumn();
 	int k = calclGlobalSlice();
 
 	if(i==0 && j==0 && k==0) {
-	/*	double min = calclGet3Dr(MODEL_3D,CONVERGENCE, 0, 0,0);
-
-		for(int s =0; s < calclGetSlices(); s++)
-		for(int x =0; x < calclGetRows(); x++)
-		for(int y =0; y < calclGetColumns(); y++) {
-			double tempMin = calclGet3Dr(MODEL_3D,CONVERGENCE, s, x, y);
-			if (min > tempMin)
-			min = tempMin;
-		}
+	
+		double min = calclGetMin3Dr(CONVERGENCE);
 
 		if (min > 105.0)
-		min = 105.0;*/
+		min = 105.0;
 
-
-		parameters->delta_t =  99.75;//0.95*min;
+		parameters->delta_t = 0.95*min;
 		parameters->delta_t_cum_prec = parameters->delta_t_cum;
 		parameters->delta_t_cum += parameters->delta_t;
 	}
@@ -195,7 +189,7 @@ __kernel void stopCondition(__CALCL_MODEL_3D, __global Parameters* parameters) {
 	calclThreadCheck3D();
 
 	int _i = calclGlobalRow();
-	int _j = calclGlobalColumns();
+	int _j = calclGlobalColumn();
 	int _k = calclGlobalSlice();
 
 	//Stop condition

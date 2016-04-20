@@ -23,7 +23,7 @@ __kernel void updateVentsEmission(__CALCL_MODEL_2D, __global Vent* vents, __glob
 
 	CALreal emitted_lava = 0;
 	int i = calclGlobalRow();
-	int j = calclGlobalColumns();
+	int j = calclGlobalColumn();
 
 	for (unsigned int k = 0; k < sizeVents; k++) {
 		int iVent = vents[k].y;
@@ -115,7 +115,7 @@ __kernel void empiricalFlows(__CALCL_MODEL_2D, Parameters parameters) {
 	calclThreadCheck2D();
 
 	int i = calclGlobalRow();
-	int j = calclGlobalColumns();
+	int j = calclGlobalColumn();
 
 	if (calclGet2Dr(MODEL_2D, SLT, i, j) > 0) {
 		CALreal f[MOORE_NEIGHBORS];
@@ -132,7 +132,7 @@ __kernel void widthUpdate(__CALCL_MODEL_2D) {
 	calclThreadCheck2D();
 
 	int i = calclGlobalRow();
-	int j = calclGlobalColumns();
+	int j = calclGlobalColumn();
 
 	CALint outFlowsIndexes[NUMBER_OF_OUTFLOWS] = { 3, 2, 1, 0, 6, 7, 4, 5 };
 	CALint n;
@@ -169,7 +169,7 @@ __kernel void updateTemperature(__CALCL_MODEL_2D, __global CALbyte * Mb, __globa
 	calclThreadCheck2D();
 
 	int i = calclGlobalRow();
-	int j = calclGlobalColumns();
+	int j = calclGlobalColumn();
 	CALreal aus = 0;
 	CALreal sh = calclGet2Dr(MODEL_2D, SLT, i, j);
 	CALreal st = calclGet2Dr(MODEL_2D, ST, i, j);
@@ -195,7 +195,7 @@ __kernel void stopCondition(__CALCL_MODEL_2D, Parameters parameters, __global CA
 	calclThreadCheck2D();
 
 	int i = calclGlobalRow();
-	int j = calclGlobalColumns();
+	int j = calclGlobalColumn();
 	if (i == 0 && j == 0) {
 		if (*elapsed_time >= parameters.effusion_duration)
 			calclRunStop();
@@ -207,7 +207,7 @@ __kernel void steering(__CALCL_MODEL_2D, __global CALbyte * Mb, Parameters param
 	calclThreadCheck2D();
 
 	int i = calclGlobalRow();
-	int j = calclGlobalColumns();
+	int j = calclGlobalColumn();
 	for (int k = 0; k < NUMBER_OF_OUTFLOWS; ++k)
 		calclInitSubstate2Dr(MODEL_2D, F(k), i, j, 0);
 

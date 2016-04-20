@@ -19,7 +19,7 @@
 #define KERNEL_INC_AC "./kernelActive/include/"
 #define OUTPUT_PATH "./data/width_final.txt"
 #define NUMBER_OF_OUTFLOWS 4
-#define ACTIVE_CELLS
+//#define ACTIVE_CELLS
 // Defining kernels' names
 #define KERNEL_ELEM_PROC_FLOW_COMPUTATION "flowsComputation"
 #define KERNEL_ELEM_PROC_WIDTH_UPDATE "widthUpdate"
@@ -142,8 +142,8 @@ int main()
 	bufferEpsilonParameter = calclCreateBuffer(context, &P.epsilon, sizeof(CALParameterr));
 	bufferRParameter = calclCreateBuffer(context, &P.r, sizeof(CALParameterr));
 
-  calclSetKernelArg2D(&kernel_elem_proc_flow_computation, 0, sizeof(CALCLmem), &bufferEpsilonParameter);
-  calclSetKernelArg2D(&kernel_elem_proc_flow_computation, 1, sizeof(CALCLmem), &bufferRParameter);
+	calclSetKernelArg2D(&kernel_elem_proc_flow_computation, 0, sizeof(CALCLmem), &bufferEpsilonParameter);
+	calclSetKernelArg2D(&kernel_elem_proc_flow_computation, 1, sizeof(CALCLmem), &bufferRParameter);
 
   // Register transition function's elementary processes kernels
 	calclAddElementaryProcess2D(device_CA, &kernel_elem_proc_flow_computation);

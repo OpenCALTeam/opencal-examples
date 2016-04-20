@@ -6,7 +6,8 @@
 #define MOORE_NEIGHBORS 9
 #define VON_NEUMANN_NEIGHBORS 7
 
-#include <OpenCAL-CL/calcl3DActive.h>
+#include <OpenCAL-CL/calcl3D.h>
+#include <OpenCAL-CL/calcl3DReduction.h>
 
 #define YOUT 29
 #define YIN 0
