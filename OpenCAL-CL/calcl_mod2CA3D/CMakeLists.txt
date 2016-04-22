@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 find_package(OpenCAL 1.0 COMPONENTS  OpenCAL OpenCAL-CL  REQUIRED)
+
+if(NOT MSVC)
+  find_library(M_LIB m)
+else()
+  # not needed on windows
+  set(M_LIB "")
+endif()
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 find_package( OpenCL REQUIRED )
@@ -18,4 +26,4 @@ file(GLOB SRC
 )
 
 add_executable(calcl_mod2CA3D ${SRC})
-target_link_libraries(calcl_mod2CA3D ${OPENCAL_LIBRARIES} m ${OpenCL_LIBRARY})
+target_link_libraries(calcl_mod2CA3D ${OPENCAL_LIBRARIES} ${M_LIB} ${OpenCL_LIBRARY})

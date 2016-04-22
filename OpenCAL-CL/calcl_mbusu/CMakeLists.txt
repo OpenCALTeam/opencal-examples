@@ -4,6 +4,14 @@ find_package(OpenCAL 1.0 COMPONENTS  OpenCAL OpenCAL-CL  REQUIRED)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 find_package( OpenCL REQUIRED )
+if(NOT MSVC)
+  find_library(M_LIB m)
+else()
+  # not needed on windows
+  set(M_LIB "")
+endif()
+
+
 include_directories( ${OpenCL_INCLUDE_DIRS}
                      ${OPENCAL_INCLUDE_DIR}
                    )
@@ -18,4 +26,4 @@ file(GLOB SRC
 )
 
 add_executable(calcl_mbusu ${SRC})
-target_link_libraries(calcl_mbusu ${OPENCAL_LIBRARIES} ${OpenCL_LIBRARY})
+target_link_libraries(calcl_mbusu ${M_LIB} ${OPENCAL_LIBRARIES} ${OpenCL_LIBRARY})

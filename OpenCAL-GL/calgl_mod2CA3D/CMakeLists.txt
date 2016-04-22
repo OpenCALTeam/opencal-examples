@@ -4,7 +4,13 @@ find_package(OpenCAL 1.0 COMPONENTS  OpenCAL OpenCAL-GL REQUIRED)
 find_package(Threads REQUIRED)
 find_package(OpenGL  REQUIRED)
 find_package(GLUT REQUIRED)
-find_library(M_LIB m)
+
+if(NOT MSVC)
+  find_library(M_LIB m)
+else()
+  # not needed on windows
+  set(M_LIB "")
+endif()
 
 FIND_PACKAGE(OpenMP)
 IF(OPENMP_FOUND)
@@ -30,4 +36,4 @@ file(GLOB SRC
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 add_executable(calgl_mod2CA3D ${SRC})
 
-target_link_libraries(calgl_mod2CA3D  ${OPENCAL_LIBRARIES} ${M_LIB} ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} )
+target_link_libraries(calgl_mod2CA3D  ${OPENCAL_LIBRARIES} ${M_LIB} ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY} pthread)

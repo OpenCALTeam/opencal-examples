@@ -3,7 +3,13 @@ cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 find_package(OpenCAL 1.0 COMPONENTS  OpenCAL  REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
-find_library(M_LIB m)
+
+if(NOT MSVC)
+  find_library(M_LIB m)
+else()
+  # not needed on windows
+  set(M_LIB "")
+endif()
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/source)
 include_directories(

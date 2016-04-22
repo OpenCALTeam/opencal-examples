@@ -4,7 +4,13 @@ find_package(OpenCAL 1.0 COMPONENTS  OpenCAL OpenCAL-CL  REQUIRED)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 find_package( OpenCL REQUIRED )
-find_library(M_LIB m)
+
+if(NOT MSVC)
+  find_library(M_LIB m)
+else()
+  # not needed on windows
+  set(M_LIB "")
+endif()
 include_directories( ${OpenCL_INCLUDE_DIRS} )
 link_directories(${OpenCL_LIBRARIES})
 

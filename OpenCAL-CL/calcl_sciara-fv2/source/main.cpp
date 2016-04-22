@@ -77,7 +77,9 @@ int main(int argc, char** argv) {
 
 	start_time = time(NULL);
 
+#ifndef _WIN32
 	setenv("CUDA_CACHE_DISABLE", "1", 1);
+#endif
 	const char * outputPath = SAVE_PATH;
 	int steps =1000;
 	int platformNum = 0;

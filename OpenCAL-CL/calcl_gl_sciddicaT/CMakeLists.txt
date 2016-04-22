@@ -5,7 +5,13 @@ find_package(OpenCL  REQUIRED)
 find_package(OpenGL  REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(Threads REQUIRED)
-find_library(M_LIB m)
+
+if(NOT MSVC)
+  find_library(M_LIB m)
+else()
+  # not needed on windows
+  set(M_LIB "")
+endif()
 
 FIND_PACKAGE(OpenMP)
 if(OPENMP_FOUND)
@@ -31,4 +37,4 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 add_executable(calcl_gl_sciddicaT ${SRC})
 
-target_link_libraries(calcl_gl_sciddicaT ${OPENCAL_LIBRARIES} ${M_LIB} ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY} ${CMAKE_THREAD_LIBS_INIT}  ${OpenCL_LIBRARY})
+target_link_libraries(calcl_gl_sciddicaT ${OPENCAL_LIBRARIES} ${M_LIB} ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY} ${OpenCL_LIBRARY} pthread)
