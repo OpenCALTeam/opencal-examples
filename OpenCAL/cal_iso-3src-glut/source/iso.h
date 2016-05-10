@@ -1,4 +1,4 @@
-#ifndef iso_h
+﻿#ifndef iso_h
 #define iso_h
 
 #include <OpenCAL/cal2D.h>
@@ -33,34 +33,34 @@
 #define ROWS 127
 #define COLS 64
 #define STEPS 100
-#define SOURCE_PATH "./data/sanfili/ferro.txt"
-#define OUTPUT_PATH "./data/sanfili/ferro_values.out"
-#define OUTPUT_PATH_STATE "./data/sanfili/ferro_states.out"
+#define SOURCE_PATH "../data/sanfili/ferro.txt"
+#define OUTPUT_PATH "../data/sanfili/ferro_values.out"
+#define OUTPUT_PATH_STATE "../data/sanfili/ferro_states.out"
 #else
-	#ifdef TEST
-		#define ROWS 10
-		#define COLS 10
-		#define STEPS 100
-		#define SOURCE_PATH "./data/test.txt"
-		#define OUTPUT_PATH "./data/test_output_value.txt"
-		#define OUTPUT_PATH_STATE "./data/test_output_state.txt"
-	#else
-		#ifdef TEST_FIL
-			#define ROWS 50
-			#define COLS 50
-			#define STEPS 1
-			#define SOURCE_PATH "./data/new_sources.txt"
-			#define OUTPUT_PATH "./data/new_output_value.txt"
-			#define OUTPUT_PATH_STATE "./data/new_output_state.txt"
-		#else
-			#define ROWS 100
-			#define COLS 50
-			#define STEPS 1
-			#define SOURCE_PATH "./data/source.txt"
-			#define OUTPUT_PATH "./data/output_value.txt"
-			#define OUTPUT_PATH_STATE "./data/output_state.txt"
-		#endif
-	#endif
+    #ifdef TEST
+        #define ROWS 10
+        #define COLS 10
+        #define STEPS 100
+        #define SOURCE_PATH "../data/test.txt"
+        #define OUTPUT_PATH "../data/test_output_value.txt"
+        #define OUTPUT_PATH_STATE "../data/test_output_state.txt"
+    #else
+        #ifdef TEST_FIL
+            #define ROWS 50
+            #define COLS 50
+            #define STEPS 1
+            #define SOURCE_PATH "../data/new_sources.txt"
+            #define OUTPUT_PATH "../data/new_output_value.txt"
+            #define OUTPUT_PATH_STATE "../data/new_output_state.txt"
+        #else
+            #define ROWS 100
+            #define COLS 50
+            #define STEPS 1
+            #define SOURCE_PATH "../data/source.txt"
+            #define OUTPUT_PATH "../data/output_value.txt"
+            #define OUTPUT_PATH_STATE "../data/output_state.txt"
+        #endif
+    #endif
 #endif
 
 #define NODATA -9999
@@ -74,22 +74,22 @@
 //extern struct CALRun2D* isoRun;
 
 struct isoSubstates {
-	struct CALSubstate2Dr *value;
-	struct CALSubstate2Db *state;
-	struct CALSubstate2Di *flux_count;
-	struct CALSubstate2Di *source_row;
-	struct CALSubstate2Di *source_col;
-	struct CALSubstate2Di *next_source_row;
-	struct CALSubstate2Di *next_source_col;
+    struct CALSubstate2Dr *value;
+    struct CALSubstate2Db *state;
+    struct CALSubstate2Di *flux_count;
+    struct CALSubstate2Di *source_row;
+    struct CALSubstate2Di *source_col;
+    struct CALSubstate2Di *next_source_row;
+    struct CALSubstate2Di *next_source_col;
 };
 
 //extern struct isoSubstates Q;
 
 struct CellularAutomata {
-	struct CALModel2D* iso;			//the cellular automaton
-	struct isoSubstates Q;			//the substates
-	CALParameteri initial_sources;	//number of initial sources
-	struct CALRun2D* isoRun;		//the simulartion run
+    struct CALModel2D* iso;			//the cellular automaton
+    struct isoSubstates Q;			//the substates
+    CALParameteri initial_sources;	//number of initial sources
+    struct CALRun2D* isoRun;		//the simulartion run
 };
 
 #define numAC 5

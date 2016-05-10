@@ -247,7 +247,7 @@ CALbyte sciddicaTSimulationStopCondition(struct CALModel2D* s3hex)
 void sciddicaTCADef()
 {
 	//cadef and rundef
-	s3hex = calCADef2D (ROWS, COLS, CAL_HEXAGONAL_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_OPT_ACTIVE_CELLS);
+	s3hex = calCADef2D (ROWS, COLS, CAL_HEXAGONAL_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_OPT_ACTIVE_CELLS_NAIVE);
 	s3hexSimulation = calRunDef2D(s3hex, 1, CAL_RUN_LOOP, CAL_UPDATE_EXPLICIT);
 
 	//add transition function's elementary processes

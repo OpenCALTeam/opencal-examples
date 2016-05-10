@@ -1,4 +1,4 @@
-#ifndef sciddicaT_h
+﻿#ifndef sciddicaT_h
 #define sciddicaT_h
 
 #include <OpenCAL/cal2D.h>
@@ -11,9 +11,9 @@
 #define P_R 0.5
 #define P_EPSILON 0.001
 #define STEPS 4000
-#define DEM_PATH "./data/dem.txt"
-#define SOURCE_PATH "./data/source.txt"
-#define OUTPUT_PATH "./data/width_final.txt"
+#define DEM_PATH "../data/dem.txt"
+#define SOURCE_PATH "../data/source.txt"
+#define OUTPUT_PATH "../data/width_final.txt"
 
 #define ACTIVE_CELLS
 //#define VERBOSE
@@ -25,13 +25,13 @@ extern struct CALRun2D* sciddicaT_simulation;
 
 
 struct sciddicaTSubstates {
-	struct CALSubstate2Dr *z;
-	struct CALSubstate2Dr *h;
+    struct CALSubstate2Dr *z;
+    struct CALSubstate2Dr *h;
 };
 
 struct sciddicaTParameters {
-	CALParameterr epsilon;
-	CALParameterr r;
+    CALParameterr epsilon;
+    CALParameterr r;
 };
 
 extern struct sciddicaTSubstates Q;

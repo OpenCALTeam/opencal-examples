@@ -133,7 +133,7 @@ CALbyte sciddicaTSimulationStopCondition(struct CALModel2D* sciddicaT)
 void sciddicaTCADef()
 {
 	//cadef and rundef
-	sciddicaT = calCADef2D (ROWS, COLS, CAL_VON_NEUMANN_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_OPT_ACTIVE_CELLS);
+	sciddicaT = calCADef2D (ROWS, COLS, CAL_VON_NEUMANN_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_OPT_ACTIVE_CELLS_NAIVE);
 	sciddicaT_simulation = calRunDef2D(sciddicaT, 1, CAL_RUN_LOOP, CAL_UPDATE_IMPLICIT);
 
 	//add transition function's elementary processes
