@@ -16,10 +16,10 @@
 #define P_PEF 0.015
 //#define P_LTT 0
 #define STEPS 2500
-#define DEM_PATH "../data/dem.txt"
-#define REGOLITH_PATH "../data/regolith.txt"
-#define SOURCE_PATH "../data/source.txt"
-#define OUTPUT_PATH "../data/width_final.txt"
+#define DEM_PATH "./data/dem.txt"
+#define REGOLITH_PATH "./data/regolith.txt"
+#define SOURCE_PATH "./data/source.txt"
+#define OUTPUT_PATH "./data/width_final.txt"
 
 #define ACTIVE_CELLS
 //#define VERBOSE

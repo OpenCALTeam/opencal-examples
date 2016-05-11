@@ -205,7 +205,6 @@ void sciddicaTSimulationInit(struct CALModel2D* s3hex)
     for (i=0; i<s3hex->rows; i++)
         for (j=0; j<s3hex->columns; j++)
             if (calGet2Dr(s3hex,Q.h,i,j) > P.adh) {
-                printf("%s", "lentroovas \n");
                 calAddActiveCell2D(s3hex,i,j);
     }
 #endif
@@ -228,8 +227,14 @@ CALbyte sciddicaTSimulationStopCondition(struct CALModel2D* s3hex)
 
 void sciddicaTCADef()
 {
+    CALbyte optimization_type = CAL_NO_OPT;
+
+#ifdef ACTIVE_CELLS
+    optimization_type = CAL_OPT_ACTIVE_CELLS_NAIVE;
+#endif
+
     //cadef and rundef
-    s3hex = calCADef2D (ROWS, COLS, CAL_HEXAGONAL_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_OPT_ACTIVE_CELLS);
+    s3hex = calCADef2D (ROWS, COLS, CAL_HEXAGONAL_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, optimization_type);
     s3hexSimulation = calRunDef2D(s3hex, 1, CAL_RUN_LOOP, CAL_UPDATE_IMPLICIT);
 
     //add transition function's elementary processes
