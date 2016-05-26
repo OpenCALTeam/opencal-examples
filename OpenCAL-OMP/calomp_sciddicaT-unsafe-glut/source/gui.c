@@ -106,14 +106,28 @@ void simulationRun(void)
 		sciddicaTSaveConfig();
 
 		//graphic rendering
-		printf("step: %d; \tactive cells: %d\r", sciddicaT_simulation->step, sciddicaT_simulation->ca2D->A.size_current);
-		glutPostRedisplay();
+                
+                if( sciddicaT_simulation->ca2D->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS_NAIVE)
+                    printf("step: %d; \tactive cells: %d\r", sciddicaT_simulation->step, sciddicaT_simulation->ca2D->A->size_current);
+                else if( sciddicaT_simulation->ca2D->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS)
+                    printf("step: %d; \tactive cells: %d\r", sciddicaT_simulation->step, sciddicaT_simulation->ca2D->contiguousLinkedList->size_current);
+                else 
+                    printf("step: %d; \tactive cells: %d\r", sciddicaT_simulation->step, 0);
+                
+                glutPostRedisplay();
 		return;
 	}
 
 #ifdef VERBOSE
 	//graphic rendering
-	printf("step: %d; \tactive cells: %d\r", sciddicaT_simulation->step, sciddicaT_simulation->ca2D->A.size_current);
+        
+         if( sciddicaT_simulation->ca2D->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS_NAIVE)
+             printf("step: %d; \tactive cells: %d\r", sciddicaT_simulation->step, sciddicaT_simulation->ca2D->A->size_current);
+         else if( sciddicaT_simulation->ca2D->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS)
+             printf("step: %d; \tactive cells: %d\r", sciddicaT_simulation->step, sciddicaT_simulation->ca2D->contiguousLinkedList->size_current);
+         else 
+             printf("step: %d; \tactive cells: %d\r", sciddicaT_simulation->step, 0);
+	
 	glutPostRedisplay();
 #endif
 }
