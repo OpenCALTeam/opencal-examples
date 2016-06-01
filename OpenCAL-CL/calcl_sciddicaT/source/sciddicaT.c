@@ -158,7 +158,7 @@ int main()
 	start_time = time(NULL);
 	calclRun2D(device_CA, 1, STEPS);
 	end_time = time(NULL);
-	printf("%lds", end_time - start_time);
+	printf("%ld", end_time - start_time);
 
 	// Saving results
 	calSaveSubstate2Dr(host_CA, Q.h, OUTPUT_PATH);
