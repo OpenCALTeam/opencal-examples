@@ -21,13 +21,15 @@
 #define FP5 12
 #define FP6 13
 
-#define Z 14
-#define D 15
-#define H 16
-#define P 17
+#define H 14
+#define P 15
 
-//subststate Int
+//single layer subststate Int
 #define S 0
+
+//single layer subststate Real
+#define Z 0
+#define D 1
 
 #define P_ADH 0.01
 #define P_RL 0.6

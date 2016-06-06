@@ -112,9 +112,9 @@ void sciddicaS3hexCADef()
     {
         Q.fp[n] = calAddSubstate2Dr(s3hex);
     }
-    Q.z = calAddSubstate2Dr(s3hex);
-    Q.d = calAddSubstate2Dr(s3hex);
-    Q.s = calAddSubstate2Di(s3hex);
+    Q.z = calAddSingleLayerSubstate2Dr(s3hex);
+    Q.d = calAddSingleLayerSubstate2Dr(s3hex);
+    Q.s = calAddSingleLayerSubstate2Di(s3hex);
     Q.h = calAddSubstate2Dr(s3hex);
     Q.p = calAddSubstate2Dr(s3hex);
 

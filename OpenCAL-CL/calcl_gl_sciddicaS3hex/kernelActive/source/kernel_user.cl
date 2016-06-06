@@ -4,8 +4,8 @@ void doErosion(__CALCL_MODEL_2D, int i, int j, CALreal	erosion_depth)
 {
 
     CALreal z, d, h, p, runup;
-    z = calclGet2Dr(MODEL_2D,Z,i,j);
-    d = calclGet2Dr(MODEL_2D,D,i,j);
+    z = calclGetSingleLayer2Dr(MODEL_2D,Z,i,j);
+    d = calclGetSingleLayer2Dr(MODEL_2D,D,i,j);
     h = calclGet2Dr(MODEL_2D,H,i,j);
     p = calclGet2Dr(MODEL_2D,P,i,j);
 
@@ -14,8 +14,8 @@ void doErosion(__CALCL_MODEL_2D, int i, int j, CALreal	erosion_depth)
     else
         runup = erosion_depth;
 
-    calclSet2Dr(MODEL_2D,Z,i,j, (z - erosion_depth));
-    calclSet2Dr(MODEL_2D,D,i,j, (d - erosion_depth));
+    calclSetSingleLayer2Dr(MODEL_2D,Z,i,j, (z - erosion_depth));
+    calclSetSingleLayer2Dr(MODEL_2D,D,i,j, (d - erosion_depth));
     calclSet2Dr(MODEL_2D,H,i,j, (h + erosion_depth));
     calclSet2Dr(MODEL_2D,P,i,j, (h + erosion_depth)*runup);
 }
@@ -32,19 +32,19 @@ __kernel void s3hexErosion(__CALCL_MODEL_2D)
     CALreal d, p, erosion_depth;
 
 
-    d = calclGet2Dr(MODEL_2D,D,i,j);
+    d = calclGetSingleLayer2Dr(MODEL_2D,D,i,j);
 
 
     if (d > 0)
     {
 
-        s = calclGet2Di(MODEL_2D,S,i,j);
+        s = calclGetSingleLayer2Di(MODEL_2D,S,i,j);
 
         if (s <  -1)
-            calclSet2Di(MODEL_2D, S, i, j, s+1);
+            calclSetSingleLayer2Di(MODEL_2D, S, i, j, s+1);
 
         if (s == -1) {
-            calclSet2Di(MODEL_2D, S, i, j, 0);
+            calclSetSingleLayer2Di(MODEL_2D, S, i, j, 0);
             doErosion(MODEL_2D,i,j,d);
             calclAddActiveCell2D(MODEL_2D, i, j);
 
@@ -87,7 +87,7 @@ __kernel void s3hexFlowsComputation(__CALCL_MODEL_2D)
 
 
 
-    z_0 = calclGet2Dr(MODEL_2D, Z, i, j);
+    z_0 = calclGetSingleLayer2Dr(MODEL_2D, Z, i, j);
     h_0 = calclGet2Dr(MODEL_2D, H, i, j);
     runup_0 = calclGet2Dr(MODEL_2D, P, i, j) / h_0;
     z_0_plus_runup_0 = z_0 + runup_0;
@@ -101,7 +101,7 @@ __kernel void s3hexFlowsComputation(__CALCL_MODEL_2D)
 
     for (n=1; n<sizeOf_X; n++)
     {
-        z_n = calclGetX2Dr(MODEL_2D, Z, i, j, n);
+        z_n = calclGetSingleLayerX2Dr(MODEL_2D, Z, i, j, n);
         h_n = calclGetX2Dr(MODEL_2D, H, i, j, n);
 
         u[n] = z_n + h_n;
