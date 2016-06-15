@@ -53,6 +53,7 @@ void simulationRun(void)
 
 	//simulation main loop
 	life.run->step++;
+	again = CAL_FALSE;
 
 	//graphic rendering
 	printf("step: %d\r", life.run->step);
