@@ -166,7 +166,17 @@ int main(int argc, char** argv) {
 //calglDisableLights();
 	calglInfoBar3Dr(drawModel, Q_temperature, "Temperature", CALGL_TYPE_INFO_USE_GREEN_SCALE, 20, 120, 300, 80);
 //calglDisableLights();
-	puts("asdasdasd"); /* prints  */
-	calglMainLoop3D(argc, argv);
+    calglHideDrawIBound3D(drawModel, 0, drawModel->calModel->rows);
+    calglHideDrawJBound3D(drawModel, 0, drawModel->calModel->columns);
+    calglHideDrawKBound3D(drawModel, 0, drawModel->calModel->slices);
+
+//    calglDisplayDrawIBound3D(drawModel, 0, drawModel->calModel->rows);
+//    calglDisplayDrawJBound3D(drawModel, 0, drawModel->calModel->columns);
+//    calglDisplayDrawKBound3D(drawModel, 50, 51);
+
+    calglDisplayDrawIBound3D(drawModel, 0, drawModel->calModel->rows);
+    calglDisplayDrawJBound3D(drawModel, 50, 51);
+    calglDisplayDrawKBound3D(drawModel, 0, drawModel->calModel->slices);
+    calglMainLoop3D(argc, argv);
 	return EXIT_SUCCESS;
 }
