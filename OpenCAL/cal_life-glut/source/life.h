@@ -4,8 +4,8 @@
 #include <OpenCAL/cal2D.h>
 #include <OpenCAL/cal2DRun.h>
 
-#define ROWS 1024
-#define COLS 1024
+#define ROWS 8
+#define COLS 16
 #define STATE_DEAD 0
 #define STATE_ALIVE 1
 
