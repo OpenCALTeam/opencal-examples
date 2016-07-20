@@ -163,9 +163,6 @@ void sciddicaTCADef()
 	sciddicaT = calCADef2D (ROWS, COLS, CAL_VON_NEUMANN_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_OPT_ACTIVE_CELLS);
 	sciddicaTsimulation = calRunDef2D(sciddicaT, 1, CAL_RUN_LOOP, CAL_UPDATE_IMPLICIT);
 
-	//put OpenCAL - OMP in unsafe state execution(to allow unsafe operation to be used)
-	calSetUnsafe2D(sciddicaT);
-
 	//add transition function's elementary processes
 	calAddElementaryProcess2D(sciddicaT, sciddicaTFlowsComputation);
 	calAddElementaryProcess2D(sciddicaT, sciddicaTWidthUpdate);
