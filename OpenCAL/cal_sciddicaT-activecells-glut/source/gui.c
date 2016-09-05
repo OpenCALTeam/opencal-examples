@@ -106,14 +106,14 @@ void simulationRun(void)
 		sciddicaTSaveConfig();
 
 		//graphic rendering
-		printf("step: %d; \tactive cells: %d\r", sciddicaTsimulation->step, sciddicaTsimulation->ca2D->A.size_current);
+		printf("step: %d; \tactive cells: %d\r", sciddicaTsimulation->step, sciddicaTsimulation->ca2D->A->size_current);
 		glutPostRedisplay();
 		return;
 	}
 
 #ifdef VERBOSE
 	//graphic rendering
-	printf("step: %d; \tactive cells: %d\r", sciddicaTsimulation->step, sciddicaTsimulation->ca2D->A.size_current);
+	printf("step: %d; \tactive cells: %d\r", sciddicaTsimulation->step, sciddicaTsimulation->ca2D->A->size_current);
 	glutPostRedisplay();
 #endif
 }

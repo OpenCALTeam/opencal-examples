@@ -82,14 +82,14 @@ void simulationRun(void)
 		printf("Elapsed time: %lds\n", end_time - start_time);
 
 		//graphic rendering
-		printf("step: %d; \tactive cells: %d\r", life3Dsimulation->step, life3Dsimulation->ca3D->A.size_current);
+		printf("step: %d; \tactive cells: %d\r", life3Dsimulation->step, life3Dsimulation->ca3D->A->size_current);
 		glutPostRedisplay();
 		return;
 	}
 
 #ifdef VERBOSE
 	//graphic rendering
-	printf("step: %d; \tactive cells: %d\r", life3Dsimulation->step, life3Dsimulation->ca3D->A.size_current);
+	printf("step: %d; \tactive cells: %d\r", life3Dsimulation->step, life3Dsimulation->ca3D->A->size_current);
 	glutPostRedisplay();
 #endif
 }

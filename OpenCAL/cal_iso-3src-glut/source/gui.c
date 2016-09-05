@@ -133,14 +133,14 @@ void simulationRun(void)
 		isoSaveConfig(&ca[currentAC]);
 
 		//graphic rendering
-		printf("step: %d; \tactive cells: %d\r", ca[currentAC].isoRun->step, ca[currentAC].isoRun->ca2D->A.size_current);
+		printf("step: %d; \tactive cells: %d\r", ca[currentAC].isoRun->step, ca[currentAC].isoRun->ca2D->A->size_current);
 		glutPostRedisplay();
 		return;
 	}
 
 #ifdef VERBOSE
 	//graphic rendering
-	printf("step: %d; \tactive cells: %d\r", ca[currentAC].isoRun->step, ca[currentAC].isoRun->ca2D->A.size_current);
+	printf("step: %d; \tactive cells: %d\r", ca[currentAC].isoRun->step, ca[currentAC].isoRun->ca2D->A->size_current);
 	glutPostRedisplay();
 #endif
 }
