@@ -113,7 +113,7 @@ void initSciara(char * demPath) {
 	sciara->parameters.effusion_duration = 0;
 
 	if (active)
-		sciara->host_CA = calCADef2D(sciara->rows, sciara->cols, CAL_MOORE_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_OPT_ACTIVE_CELLS);
+        sciara->host_CA = calCADef2D(sciara->rows, sciara->cols, CAL_MOORE_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_OPT_ACTIVE_CELLS_NAIVE);
 	else
 		sciara->host_CA = calCADef2D(sciara->rows, sciara->cols, CAL_MOORE_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_NO_OPT);
 

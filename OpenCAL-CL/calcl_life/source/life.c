@@ -22,7 +22,7 @@ int main()
   CALCLprogram program = calclLoadProgram2D(context, device, KERNEL_SRC, NULL);
 
 	// Define a host-side CA and declare a substate
-	struct CALModel2D* host_CA = calCADef2D(8, 16, CAL_MOORE_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_NO_OPT);
+    struct CALModel2D* host_CA = calCADef2D(8, 16, CAL_MOORE_NEIGHBORHOOD_2D, CAL_SPACE_TOROIDAL, CAL_OPT_ACTIVE_CELLS_NAIVE);
 	struct CALSubstate2Di* Q;
 
 	// Register the substate to the host CA
@@ -39,7 +39,7 @@ int main()
 	calInit2Di(host_CA, Q, 2, 2, 1);
 
 	// Define a device-side CA
-  struct CALCLModel2D * device_CA = calclCADef2D(host_CA, context, program, device);
+    struct CALCLModel2D * device_CA = calclCADef2D(host_CA, context, program, device);
 
 	// Extract a kernel from program
 	CALCLkernel kernel_life_transition_function = calclGetKernelFromProgram(&program, KERNEL_LIFE_TRANSITION_FUNCTION);

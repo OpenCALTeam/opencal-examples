@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
 
 	// Select a compliant device
 	calcl_device_manager = calclCreateManager();
-	calclPrintPlatformsAndDevices(calcl_device_manager);
+    //calclPrintPlatformsAndDevices(calcl_device_manager);
 	CALCLdevice device;
 	calclGetPlatformAndDeviceFromStdIn(calcl_device_manager, &device);
 	CALCLcontext context = calclCreateContext(&device);

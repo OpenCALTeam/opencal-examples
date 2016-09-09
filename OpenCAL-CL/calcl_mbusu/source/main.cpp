@@ -16,7 +16,7 @@ int active;
 time_t start_time, end_time;
 
 void setParameters(){
-	mbusu->parameters.ascii_output_time_step = 84000;				//[s] in seconds
+    mbusu->parameters.ascii_output_time_step = 800;				//[s] in seconds
 	mbusu->parameters.lato = 5.0;
 	mbusu->parameters.delta_t = 10.0;
 	mbusu->parameters.delta_t_cum = 0.0;
@@ -50,10 +50,10 @@ int main(int argc, char** argv) {
 
 	CALCLcontext context = calclCreateContext(&device);
 
-	CALCLprogram program = calclLoadProgram3D(context, device, (char *)kernelSrc, (char *)kernelInc);
-	initMbusu();
+    CALCLprogram program = calclLoadProgram3D(context, device, (char *)kernelSrc, (char *)kernelInc);
+    initMbusu();
 	setParameters();
-	simulationInitialize();
+    simulationInitialize();
 	CALCLModel3D * device_CA = NULL;
 
 	device_CA = calclCADef3D(mbusu->host_CA,context,program,device);
@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
 	CALCLkernel kernel_steering = calclGetKernelFromProgram(&program, (char *)KER_SCIARA_STEERING);
 
 	CALCLmem parametersBuff = calclCreateBuffer(context, &mbusu->parameters, sizeof(Parameters));
-	clSetKernelArg(kernel_elementary_process_one, MODEL_ARGS_NUM, sizeof(CALCLmem), &parametersBuff);
+    clSetKernelArg(kernel_elementary_process_one, MODEL_ARGS_NUM, sizeof(CALCLmem), &parametersBuff);
 	clSetKernelArg(kernel_stop_condition, MODEL_ARGS_NUM, sizeof(CALCLmem), &parametersBuff);
 
 	//steering
@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
 	calclAddElementaryProcess3D(device_CA, &kernel_elementary_process_one);
 
 	calclAddSteeringFunc3D(device_CA, &kernel_steering);
-	calclAddStopConditionFunc3D(device_CA, &kernel_stop_condition);
+    calclAddStopConditionFunc3D(device_CA, &kernel_stop_condition);
 
 	start_time = time(NULL);
 

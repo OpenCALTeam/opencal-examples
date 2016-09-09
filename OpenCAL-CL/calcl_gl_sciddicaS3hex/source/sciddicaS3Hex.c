@@ -97,7 +97,7 @@ void sciddicaS3hexCADef()
     CALbyte optimization_type = CAL_NO_OPT;
 
 #ifdef ACTIVE_CELLS
-    optimization_type = CAL_OPT_ACTIVE_CELLS;
+    optimization_type = CAL_OPT_ACTIVE_CELLS_NAIVE;
 #endif
 
     //cadef and rundef
