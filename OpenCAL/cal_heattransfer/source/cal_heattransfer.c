@@ -90,14 +90,16 @@ void heatModel_TransitionFunction(struct CALModel3D* heatModel, int i, int j, in
 // Simulation init callback function used to set a seed at position (24, 0, 0)
 void heatModel_SimulationInit(struct CALModel3D* heatModel)
 {
+	//int i;
+	int j, z;
 
 	calInitSubstate3Dr(heatModel, Q_temperature, (CALreal)0);
 	calInitSubstate3Db(heatModel, Q_heat_source, CAL_FALSE);
 
 
 	//for(int i=1 ; i < ROWS ; ++i){
-		for (int j = 1; j < COLS; ++j) {
-			for (int z = 1; z < LAYERS; ++z) {
+		for (j = 1; j < COLS; ++j) {
+			for (z = 1; z < LAYERS; ++z) {
 
 				CALreal _i, _j,_z;
 				CALreal chunk = ROWS/2;

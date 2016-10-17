@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
-find_package(OpenCAL 1.0 COMPONENTS  OpenCAL OpenCAL-CL REQUIRED)
+find_package(OpenCAL 1.1 COMPONENTS  OpenCAL OpenCAL-CL REQUIRED)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 find_package( OpenCL REQUIRED )

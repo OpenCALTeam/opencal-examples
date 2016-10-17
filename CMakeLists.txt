@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 set(OPENCAL_MAJOR_VERSION 1)
-set(OPENCAL_MINOR_VERSION 0)
+set(OPENCAL_MINOR_VERSION 1)
 set(OPENCAL_VERSION
   ${OPENCAL_MAJOR_VERSION}.${OPENCAL_MINOR_VERSION})
 
@@ -11,7 +11,7 @@ project(OpenCAL-examples-${OPENCAL_VERSION}
 option(BUILD_OPENCAL_SERIAL "Build the OpenCAL serial version"                                      ON )
 option(BUILD_OPENCAL_OMP    "Build the OpenCAL-OMP OpenMP parallel version (OpenMP required)"       ON )
 option(BUILD_OPENCAL_OMP_PARALLEL "Controls if OpenCAL-OMP compiled agaist libomp. If off just one processor is used."  ON )
-option(BUILD_OPENCAL_CL     "Build the OpenCAL-CL OpenCL parallel version (OpenCL required)"        OFF)
+option(BUILD_OPENCAL_CL     "Build the OpenCAL-CL OpenCL parallel version (OpenCL required)"        ON)
 option(BUILD_OPENCAL_GL     "Build the OpenCAL-GL visualization library (OpenGL and GLUT required)" OFF)
 option(BUILD_OPENCAL_++     "Build the OpenCAL-GL visualization library (OpenGL and GLUT required)" OFF)
 

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
-find_package(OpenCAL 1.0 COMPONENTS  OpenCAL OpenCAL-CL OpenCAL-GL REQUIRED)
+find_package(OpenCAL 1.1 COMPONENTS  OpenCAL OpenCAL-CL OpenCAL-GL REQUIRED)
 find_package(OpenCL REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
