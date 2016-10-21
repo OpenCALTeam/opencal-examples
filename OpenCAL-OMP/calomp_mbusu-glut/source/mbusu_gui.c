@@ -87,14 +87,25 @@ void simulationRun(void)
 		printf("Elapsed time: %lds\n", end_time - start_time);
 
 		//graphic rendering
-		printf("step: %d; \tactive cells: %d\r", mbusuSimulation->step, mbusuSimulation->ca3D->A->size_current);
+        if(mbusu->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS_NAIVE)
+            printf("step: %d; \tactive cells: %d\r", mbusuSimulation->step, mbusuSimulation->ca3D->A->size_current);
+        else
+            if(mbusu->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS)
+                printf("step: %d; \tactive cells: %d\r", mbusuSimulation->step, mbusuSimulation->ca3D->contiguousLinkedList->size_current);
+
+
 		glutPostRedisplay();
 		return;
 	}
 
 #ifdef VERBOSE
 	//graphic rendering
-	printf("step: %d; \tactive cells: %d\r", mbusuSimulation->step, mbusuSimulation->ca3D->A->size_current);
+    if(mbusu->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS_NAIVE)
+        printf("step: %d; \tactive cells: %d\r", mbusuSimulation->step, mbusuSimulation->ca3D->A->size_current);
+    else
+        if(mbusu->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS)
+            printf("step: %d; \tactive cells: %d\r", mbusuSimulation->step, mbusuSimulation->ca3D->contiguousLinkedList->size_current);
+
 	if (mbusuSimulation->step % REFRESH == 0)
 		glutPostRedisplay();
 #endif

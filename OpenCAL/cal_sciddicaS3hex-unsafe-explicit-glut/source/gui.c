@@ -107,14 +107,24 @@ void simulationRun(void)
 		sciddicaTSaveConfig();
 
 		//graphic rendering
-		printf("step: %d; \tactive cells: %d\r", s3hexSimulation->step, s3hexSimulation->ca2D->A->size_current);
+        if(s3hex->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS_NAIVE)
+            printf("step: %d; \tactive cells: %d\r", s3hexSimulation->step, s3hexSimulation->ca2D->A->size_current);
+        else
+            if(s3hex->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS)
+                printf("step: %d; \tactive cells: %d\r", s3hexSimulation->step, s3hexSimulation->ca2D->contiguousLinkedList->size_current);
+
 		glutPostRedisplay();
 		return;
 	}
 
 #ifdef VERBOSE
 	//graphic rendering
-	printf("step: %d; \tactive cells: %d\r", s3hexSimulation->step, s3hexSimulation->ca2D->A->size_current);
+    if(s3hex->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS_NAIVE)
+        printf("step: %d; \tactive cells: %d\r", s3hexSimulation->step, s3hexSimulation->ca2D->A->size_current);
+    else
+        if(s3hex->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS)
+            printf("step: %d; \tactive cells: %d\r", s3hexSimulation->step, s3hexSimulation->ca2D->contiguousLinkedList->size_current);
+
 	glutPostRedisplay();
 #endif
 }
