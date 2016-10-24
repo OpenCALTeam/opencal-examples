@@ -111,7 +111,7 @@ void simulationRun(void)
             printf("step: %d; \tactive cells: %d\r\n", s3hexSimulation->step, s3hexSimulation->ca2D->A->size_current);
         else
             if(s3hex->OPTIMIZATION == CAL_OPT_ACTIVE_CELLS)
-                printf("step: %d; \tactive cells: %d\r\n", s3hexSimulation->step, s3hexSimulation->ca2D->contiguousLinkedList->size);
+                printf("step: %d; \tactive cells: %d\r\n", s3hexSimulation->step, s3hexSimulation->ca2D->contiguousLinkedList->size_current);
 		glutPostRedisplay();
 		return;
 	}
