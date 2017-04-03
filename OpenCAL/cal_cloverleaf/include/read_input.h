@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void set_default_values(CLOVER_MODEL* clover_model){
+void set_default_values(){
 
     test_problem = 0;
     profiler_on  = 0;
@@ -205,6 +205,8 @@ void parseToken(CLOVER_MODEL* clover_model, char* token, FILE* g_out){
  */
 void read_input(CLOVER_MODEL* clover_model, FILE* const g_in,  FILE* const g_out, const std::string& in_file, const std::string& out_file){
     constexpr const static unsigned short LINESZ = 1024;
+
+    set_default_values();
     fprintf(g_out," Reading input file\n");
 
     char buff[LINESZ];

@@ -14,7 +14,7 @@ void field_summary_kernel(struct CALModel2D  * clover_model,  int i,  int j){
     double vsqrd, cell_vol, cell_mass;
 
     vsqrd = 0.0;
-    auto get = [clover_model](auto sbs, auto x, auto y){return calGet2Dr(clover_model,sbs,x,y); };
+
 
     //vsqrd = vsqrd + 0.25 * ( xvel0[OPS_ACC4(0,0)] * xvel0[OPS_ACC4(0,0)] + yvel0[OPS_ACC5(0,0)] * yvel0[OPS_ACC5(0,0)]);
     vsqrd = vsqrd + 0.25 * ( get(clover_sbs.xvel0,cx,cy)*get(clover_sbs.xvel0,cx,cy) +

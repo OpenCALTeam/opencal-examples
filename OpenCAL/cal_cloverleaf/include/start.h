@@ -52,7 +52,7 @@ void start(FILE* g_out){
     fields[FIELD::YVEL1]     = 1;
 
     //update_halo qui.
-
+    //non abbiamo halo nella versione seriale
 
     fprintf(g_out,"\n");
     fprintf(g_out," Problem initialised and generated\n");

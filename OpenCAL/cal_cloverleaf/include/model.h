@@ -13,6 +13,8 @@ extern "C"{
 #define FTNREF2D(i_index,j_index,i_size,i_lb,j_lb) ((i_size)*(j_index-(j_lb))+(i_index)-(i_lb))
 
 
+
+
 using CALBuffer = CALreal*;
 
 
@@ -128,7 +130,7 @@ extern state_type * states;
 extern field_type field;
 extern int g_rect, g_circ, g_point;
 
-
+extern int jdt, kdt;
 
 typedef struct {
     //    /**----------Cloverleaf Vars/Consts--------------**/
@@ -198,4 +200,6 @@ enum  FIELD : std::int8_t  {
 
 extern std::array<int, FIELD::NUM_FIELDS> fields;
 
+auto get = [&](auto sbs, auto x, auto y){return calGet2Dr(clover_model,sbs,x,y); };
+auto set = [&](auto sbs, auto x, auto y, auto val){return calSet2Dr(clover_model,sbs,x,y,val); };
 #endif // MODEL_H_
