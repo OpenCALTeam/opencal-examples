@@ -24,4 +24,10 @@ FILE* open_FILE_orDie(const string& file_path, const string& modifiers){
     }
 }
 
+
+inline void setFields(const int n){
+    for(int i=0; i < FIELD::NUM_FIELDS ; i++)
+        fields[i]=n;
+}
+
 #endif //UTILS_H_

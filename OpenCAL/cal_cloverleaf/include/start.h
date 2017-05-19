@@ -7,6 +7,7 @@
 #include<generate.h>
 #include<field_summary.h>
 #include<ideal_gas.h>
+#include<update_halo.h>
 void start(FILE* g_out){
 
     /**--------------------------decompose 2D grid ----------------------------**/
@@ -39,20 +40,25 @@ void start(FILE* g_out){
     ideal_gas(false);
     calUpdate2D(clover_model);
 
-    //Prime all halo data for the first step
-    fields[FIELD::DENSITY0]  = 1;
-    fields[FIELD::ENERGY0]   = 1;
-    fields[FIELD::PRESSURE]  = 1;
+    //---updateHalo----
+    setFields(0);
+    fields[FIELD::DENSITY0] = 1;
+    fields[FIELD::ENERGY0] = 1;
+    fields[FIELD::PRESSURE] = 1;
     fields[FIELD::VISCOSITY] = 1;
-    fields[FIELD::DENSITY1]  = 1;
-    fields[FIELD::ENERGY1]   = 1;
-    fields[FIELD::XVEL0]     = 1;
-    fields[FIELD::YVEL0]     = 1;
-    fields[FIELD::XVEL1]     = 1;
-    fields[FIELD::YVEL1]     = 1;
+    fields[FIELD::DENSITY1] = 1;
+    fields[FIELD::ENERGY1] = 1;
+    fields[FIELD::XVEL0] = 1;
+    fields[FIELD::YVEL0] = 1;
+    fields[FIELD::XVEL1] = 1;
+    fields[FIELD::YVEL1] = 1;
+    FIELD_DEPTH = 2;
+    update_halo();
+    //---updateHalo----
 
     //update_halo qui.
     //non abbiamo halo nella versione seriale
+    update_halo();
 
     fprintf(g_out,"\n");
     fprintf(g_out," Problem initialised and generated\n");

@@ -59,7 +59,6 @@ typedef struct{
     struct CALSubstate2Dr * pressure;
     struct CALSubstate2Dr * viscosity;
     struct CALSubstate2Dr * soundspeed;
-    struct CALSubstate2Dr * volume;
 
     struct CALSubstate2Dr * xvel0;
     struct CALSubstate2Dr * xvel1;
@@ -69,6 +68,8 @@ typedef struct{
     struct CALSubstate2Dr * mass_flux_x;
     struct CALSubstate2Dr * vol_flux_y;
     struct CALSubstate2Dr * mass_flux_y;
+
+    struct CALSubstate2Dr * volume;
 
     //work arrays
     struct CALSubstate2Dr * work_array1;
@@ -199,7 +200,11 @@ enum  FIELD : std::int8_t  {
 };
 
 extern std::array<int, FIELD::NUM_FIELDS> fields;
+extern std::array<CALSubstate2Dr*,FIELD::NUM_FIELDS> FIELDS_SUBSTATE;
+extern unsigned int FIELD_DEPTH;
+
 
 auto get = [&](auto sbs, auto x, auto y){return calGet2Dr(clover_model,sbs,x,y); };
 auto set = [&](auto sbs, auto x, auto y, auto val){return calSet2Dr(clover_model,sbs,x,y,val); };
+auto setCurr = [&](auto sbs, auto x, auto y, auto val){return calSetCurrent2Dr(clover_model,sbs,x,y,val); };
 #endif // MODEL_H_

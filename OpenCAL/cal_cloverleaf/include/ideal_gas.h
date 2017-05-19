@@ -58,6 +58,8 @@ void ideal_gas(const bool predict){
     else
         calApplyElementaryProcess2D(clover_model, ideal_gas_kernel1);
 
+     calUpdate2D(clover_model);
+
 }
 
 

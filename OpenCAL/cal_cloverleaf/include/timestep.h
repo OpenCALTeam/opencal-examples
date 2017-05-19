@@ -21,7 +21,16 @@ void timestep( FILE* g_out){
 
     ideal_gas(false);
 
-    //niente update halo nella versione seriale
+    //---updateHalo----
+    setFields(0);
+    fields[FIELD::DENSITY0] = 1;
+    fields[FIELD::ENERGY0] = 1;
+    fields[FIELD::PRESSURE] = 1;
+    fields[FIELD::XVEL0] = 1;
+    fields[FIELD::YVEL0] = 1;
+    FIELD_DEPTH = 1;
+    update_halo();
+    //---updateHalo----
 
     viscosity();
 

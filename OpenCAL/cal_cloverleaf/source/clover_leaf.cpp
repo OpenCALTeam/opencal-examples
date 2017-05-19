@@ -8,6 +8,9 @@
 #include<start.h>
 #include<timestep.h>
 #include<PdV.h>
+#include<accelerate.h>
+#include<calc_flux.h>
+#include<advection.h>
 using std::string;
 FILE* g_in, *g_out;
 string in_file, out_file;
@@ -37,9 +40,12 @@ int state_max;
 bool complete; //logical = boolean
 
 std::array<int, FIELD::NUM_FIELDS> fields = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+std::array<CALSubstate2Dr*,FIELD::NUM_FIELDS> FIELDS_SUBSTATE;
+unsigned int FIELD_DEPTH;
 
 double end_time;
 int step;
+
 int end_step;
 int visit_frequency;
 int summary_frequency;
@@ -57,7 +63,10 @@ g_circ=2,
 g_point=3;
 
 
+
 int jdt, kdt;
+
+
 
 
 /******************************************************************************
@@ -66,6 +75,7 @@ int jdt, kdt;
 
 int main(int argc, char **argv)
 {
+
     CLOVER_MODEL* clover_model;
     printf(" Clover version %f\n", g_version);
     /**-------------------------- OPENCAL Initialisation --------------------------**/
@@ -88,6 +98,17 @@ int main(int argc, char **argv)
         timestep(g_out);
 
         PdV(true);
+        accelerate();
+        PdV(false);
+
+        calc_flux();
+        advection();
+
+        advect_x = !advect_x;
+        clover_time+=dt;
+
+
+
     }
 
 
