@@ -1,106 +1,97 @@
 
-#include <OpenCAL-OMP/cal3D.h>
-#include <OpenCAL-OMP/cal3DIO.h>
-#include <OpenCAL-OMP/cal3DRun.h>
-#include <OpenCAL-OMP/cal2DBuffer.h>
-#include <OpenCAL/cal3DReduction.h>
+#include <OpenCAL/cal2D.h>
+#include <OpenCAL/cal2DIO.h>
+#include <OpenCAL/cal2DRun.h>
+#include <OpenCAL/cal2DBuffer.h>
+#include <OpenCAL/cal2DReduction.h>
 #include <stdlib.h>
 #include <float.h>
 #include <math.h>
 
-#define ROWS 40
-#define COLS 80
+#define ROWS 100
+#define COLS 100
 #define LAYERS 1
-#define CELL_SIZE_X 5
-#define CELL_SIZE_Y 5
-#define CELL_SIZE_Z 20
+#define CELL_SIZE_X 10
+#define CELL_SIZE_Y 10
+#define SPESSORE 50
 
-#define SSinitial 0.00001
-#define Kinitial  0.00001
+#define Syinitial 0.1
+#define Kinitial  0.0000125
 
-#define headFirstCol 30
-#define headLastCol  25
+#define headFixed 50
+#define headCalculated 50
 
-struct CALModel3D* satured;
-struct CALSubstate3Dr* head; // carico
-struct CALSubstate3Dr* K; // permeabilità
-struct CALSubstate3Dr* SS; // immagazinamento
-struct CALSubstate3Dr* Sorgente; // sorgente
-struct CALSubstate3Dr* convergence; // convergence
+#define SogliaMinima 25
 
-struct CALSubstate3Dr* Mod; // immagazinamento
+struct CALModel2D* satured;
+struct CALSubstate2Dr* head; // carico
+struct CALSubstate2Dr* K; // permeabilità
+struct CALSubstate2Dr* Sy; // immagazinamento
+struct CALSubstate2Dr* Sorgente; // sorgente
+struct CALSubstate2Dr* convergence; // convergence
 
-struct CALRun3D* satured_simulation;
+struct CALSubstate2Dr* Mod; // immagazinamento
+
+struct CALRun2D* satured_simulation;
 
 int ascii_output_time_step = 180000;				//[s] in seconds
-double delta_t = 1.0;
-double delta_t_cum = 0.0;
-double delta_t_cum_prec = 0.0;
+float delta_t_ = 4000;
+float delta_t_cum = 0.0;
+float delta_t_cum_prec = 0.0;
 
-//double convergence = ((CELL_SIZE_X*CELL_SIZE_Y)*SSinitial)/(Kinitial*4);
+//double convergence = ((CELL_SIZE_X*CELL_SIZE_Y)*Syinitial)/(Kinitial*4);
 
-void saturedTransitionFunction(struct CALModel3D* ca, int i, int j, int k)
+void saturedTransitionFunction(struct CALModel2D* ca, int i, int j)
 {
-	// int sum = 0, n;
-
-	// for (n=0; n<ca->sizeof_X; n++)
-	// 	sum += calGetX3Db(ca, Q, i, j, k, n);
-
-	// calSet3Db(ca, Q, i, j, k, sum%2);
-
-    if(j==0 || j == COLS-1){
+    if(j==0 || j ==COLS-1 || i ==ROWS-1  || i ==0){
         return;
     }
     double diffHead=0.0;
    
-    double sumFlows=0.0;
-    double sumVelocity=0.0;
-    double tmpK = 0.0;
+    double sumFlows=0.0;cd 
+    double tmpT = 0.0;
 
-    for (int n=1; n<ca->sizeof_X-2; n++){
-            if( ( i==0 && n==1 ) || ( i == ROWS-1 && n==4 )){
-                diffHead = 0;
-            }
-            else
-            {
-                diffHead = (calGetX3Dr(ca, head, i, j, k, n)- calGet3Dr(ca, head, i, j, k));
-            }
-            tmpK = calGetX3Dr(ca, K, i, j, k, n);
-            sumFlows += (tmpK * CELL_SIZE_Z * diffHead)-calGet3Dr(ca, Sorgente, i, j, k);
-            sumVelocity += calGet3Dr(ca, K, i, j, k)*abs(diffHead);
+    for (int n=1; n<ca->sizeof_X; n++){
 
+            diffHead = (calGetX2Dr(ca, head, i, j, n)- calGet2Dr(ca, head, i, j));
 
+            tmpT = calGetX2Dr(ca, K, i, j, n)*SPESSORE;
+
+            sumFlows += (tmpT * diffHead);
     }
+    sumFlows+=-calGet2Dr(ca, Sorgente, i, j);
 
-    double vol = CELL_SIZE_X*CELL_SIZE_Y*CELL_SIZE_Z;
-    double ht1 = (sumFlows*delta_t)/(calGet3Dr(ca, SS, i, j, k)*vol);
-    calSet3Dr(ca, head, i, j, k, ht1+calGet3Dr(ca, head, i, j, k));
+    double area = CELL_SIZE_X*CELL_SIZE_Y;
+    double ht1 = (sumFlows*delta_t_)/(calGet2Dr(ca, Sy, i, j)*area);
+    calSet2Dr(ca, head, i, j, ht1+calGet2Dr(ca, head, i, j));
 
-    // double conv = pow(CELL_SIZE_X*CELL_SIZE_Y*0.5,2)/sumVelocity;//(CELL_SIZE_X)/(CELL_SIZE_Z*calGet3Dr(ca, K, i, j, k)*maxdiffhead);
-    // //  if(i == 20 && j ==50){
-    // //     printf("conv = %f\n", conv);
-    // // }
-    // calSet3Dr(ca, convergence, i, j, k, conv);
+    // double conv = (CELL_SIZE_X)/(SPESSORE*calGet2Dr(ca, K, i, j, k)*maxdiffhead);
+    //  if(i == 20 && j ==50){
+    //     printf("conv = %f\n", conv);
+    //     printf("maxdiffhead = %f\n", maxdiffhead);
+    //     printf("SPESSORE*calGet2Dr(ca, K, i, j, k)*maxdiffhead = %f\n", SPESSORE*calGet2Dr(ca, K, i, j, k)*maxdiffhead);
+    // }
+    // calSet2Dr(ca, convergence, i, j, k, conv);
     
 }
 
-void saturedSimulationSteering(struct CALModel3D* satured) 
+void saturedSimulationSteering(struct CALModel2D* satured)
 {
     // double min;
-    // min = calReductionComputeMin3Dr(satured, convergence);
-	// printf("min = %f\n", min);
+    // min = calReductionComputeMin2Dr(satured, convergence);
+	// // printf("min = %f\n", min);
     // if (min > 105.0)
 	// 	min = 105.0;
 
-	delta_t = 0.5;//0.95*min;
-	delta_t_cum_prec = delta_t_cum;
-	delta_t_cum += delta_t;
+	// delta_t = 0.95*min;
+	// delta_t_cum_prec = delta_t_cum;
+	// delta_t_cum += delta_t;
 
     
-     printf("delta_t_cum_prec = %f\n", delta_t_cum_prec);
+    // printf("delta_t_cum_prec = %f\n", delta_t_cum_prec);
 }
 
-CALbyte saturedSimulationStopCondition(struct CALModel3D* satured)
+CALbyte saturedSimulationStopCondition(struct CALModel2D* satured)
 {
 
         // printf("ascii_output_time_step = %d\n", ascii_output_time_step);
@@ -118,36 +109,31 @@ CALbyte saturedSimulationStopCondition(struct CALModel3D* satured)
 
 
 
-void saturedInit(struct CALModel3D* ca)
+void saturedInit(struct CALModel2D* ca)
 {
     for(int i = 0; i< ROWS;i++)
         for(int j = 0; j< COLS;j++)
-            for(int k = 0; k< LAYERS;k++)
             {        
-              calSet3Dr(satured, head, i, j, k, headFirstCol);
+              if( i<25 || i> 75 || j < 25 || j > 75) 
+                calSet2Dr(satured, head, i, j, headFixed);
+              else
+                calSet2Dr(satured, head, i, j, headCalculated);
             }
 	
     for(int i = 0; i< ROWS;i++)
         for(int j = 0; j< COLS;j++)
-            for(int k = 0; k< LAYERS;k++)
             {
-                calSet3Dr(satured, K, i, j, k, Kinitial);
-                calSet3Dr(satured, SS, i, j, k, SSinitial);
+                calSet2Dr(satured, K, i, j, Kinitial);
+                calSet2Dr(satured, Sy, i, j, Syinitial);
             }
 
-    for(int i = 0; i< ROWS; i++)
-        for(int k = 0; k< LAYERS;k++)
-        {    
-            calSet3Dr(satured, head, i, COLS-1, k, headLastCol);
-        }
 
     for(int i = 0; i< ROWS;i++)
         for(int j = 0; j< COLS;j++)
-            for(int k = 0; k< LAYERS;k++)
             {    
-                calSet3Dr(satured, Sorgente, i, j, k, 0);
+                calSet2Dr(satured, Sorgente, i, j, 0);
             }
-	calSet3Dr(satured, Sorgente, 20, 50, 0, 0.001);
+	calSet2Dr(satured, Sorgente, 49, 49, 0.001);
 }
 
 
@@ -180,22 +166,27 @@ void saturedInit(struct CALModel3D* ca)
 //   return CAL_TRUE;
 // }
 
+int factorial(int n)
+{
+  return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
+}
+
 int main(){
 
 
     // define of the satured CA and satured_simulation simulation objects
-	satured = calCADef3D(ROWS, COLS, LAYERS, CAL_VON_NEUMANN_NEIGHBORHOOD_3D, CAL_SPACE_FLAT, CAL_NO_OPT);
-	satured_simulation = calRunDef3D(satured, 1, 180000, CAL_UPDATE_IMPLICIT);
+	satured = calCADef2D(ROWS, COLS, CAL_VON_NEUMANN_NEIGHBORHOOD_2D, CAL_SPACE_FLAT, CAL_NO_OPT);
+	satured_simulation = calRunDef2D(satured, 1, 260, CAL_UPDATE_IMPLICIT);
 
 	// add the Q substate to the satured CA
-	head = calAddSubstate3Dr(satured);
-    K = calAddSubstate3Dr(satured);
-    SS = calAddSubstate3Dr(satured);
-    Sorgente = calAddSubstate3Dr(satured);
-    convergence = calAddSubstate3Dr(satured);
+	head = calAddSubstate2Dr(satured);
+    K = calAddSubstate2Dr(satured);
+    Sy = calAddSubstate2Dr(satured);
+    Sorgente = calAddSubstate2Dr(satured);
+    convergence = calAddSubstate2Dr(satured);
 
 	// add transition function's elementary process
-	calAddElementaryProcess3D(satured, saturedTransitionFunction);
+	calAddElementaryProcess2D(satured, saturedTransitionFunction);
 
     // int rowsModFlow = 320;
     // int colsModFlow = 10;
@@ -241,36 +232,36 @@ int main(){
     // }
     
     
-    calRunAddInitFunc3D(satured_simulation, saturedInit);
-    calRunInitSimulation3D(satured_simulation);
-    //calRunAddSteeringFunc3D(satured_simulation, saturedSimulationSteering);
-	calRunAddStopConditionFunc3D(satured_simulation, saturedSimulationStopCondition);
+    calRunAddInitFunc2D(satured_simulation, saturedInit);
+    calRunInitSimulation2D(satured_simulation);
+    //calRunAddSteeringFunc2D(satured_simulation, saturedSimulationSteering);
+	//calRunAddStopConditionFunc2D(satured_simulation, saturedSimulationStopCondition);
 
 	// save the Q substate to file
-	// calSaveSubstate3Dr(satured, head, "./satured_head_0000.txt");
-    // calSaveSubstate3Dr(satured, K, "./satured_K_0000.txt");
-    // calSaveSubstate3Dr(satured, SS, "./satured_SS_0000.txt");
+	// calSaveSubstate2Dr(satured, head, "./satured_head_0000.txt");
+    // calSaveSubstate2Dr(satured, K, "./satured_K_0000.txt");
+    // calSaveSubstate2Dr(satured, SS, "./satured_SS_0000.txt");
     
     // printf(" convergence = %f\n", convergence);
 	// // simulation run
-	calRun3D(satured_simulation);
+	calRun2D(satured_simulation);
 
-    calSaveSubstate3Dr(satured, head, "./satured_head_LAST.txt");
-    // calSaveSubstate3Dr(satured, K, "./satured_K_LAST.txt");
-    // calSaveSubstate3Dr(satured, SS, "./satured_SS_LAST.txt");
-    calSaveSubstate3Dr(satured, convergence, "./satured_convergence_LAST.txt");
+    calSaveSubstate2Dr(satured, head, "./satured_head_LAST.txt");
+    // calSaveSubstate2Dr(satured, K, "./satured_K_LAST.txt");
+    // calSaveSubstate2Dr(satured, SS, "./satured_SS_LAST.txt");
+    //calSaveSubstate2Dr(satured, convergence, "./satured_convergence_LAST.txt");
 
-    for(int i = 0; i< ROWS;i++){
-       for(int j = 0; j< COLS;j++)
-            printf("%d\t%d\t%f\n",j+1,i+1,head->current[i*COLS+j]);
-        //printf(" \n");
-    }
+    // for(int i = 0; i< ROWS;i++){
+    //    for(int j = 0; j< COLS;j++)
+    //         printf("%d\t%d\t%f\n",j+1,i+1,head->current[i*COLS+j]);
+    //     //printf(" \n");
+    // }
 
     // save the Q substate to file
-	//calSaveSubstate3Db(satured, Q, "./satured_LAST.txt");
+	//calSaveSubstate2Db(satured, Q, "./satured_LAST.txt");
 
 	// finalize simulation and CA objects
-	calRunFinalize3D(satured_simulation);
-	calFinalize3D(satured);
+	calRunFinalize2D(satured_simulation);
+	calFinalize2D(satured);
 
 }
