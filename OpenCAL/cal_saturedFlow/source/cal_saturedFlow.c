@@ -8,18 +8,18 @@
 #include <float.h>
 #include <math.h>
 
-#define ROWS 100
-#define COLS 100
+#define ROWS 100//40
+#define COLS 100//80
 #define LAYERS 1
-#define CELL_SIZE_X 10
-#define CELL_SIZE_Y 10
-#define SPESSORE 50
+#define CELL_SIZE_X 10 //5
+#define CELL_SIZE_Y 10 //5
+#define SPESSORE 50 //20
 
-#define Syinitial 0.1
-#define Kinitial  0.0000125
+#define Syinitial 0.1 //0.0002
+#define Kinitial  0.0000125 //0.00001
 
-#define headFixed 50
-#define headCalculated 50
+#define headFixed 50 //30
+#define headCalculated 50 //30
 
 #define SogliaMinima 25
 
@@ -34,10 +34,7 @@ struct CALSubstate2Dr* Mod; // immagazinamento
 
 struct CALRun2D* satured_simulation;
 
-int ascii_output_time_step = 180000;				//[s] in seconds
-float delta_t_ = 4000;
-float delta_t_cum = 0.0;
-float delta_t_cum_prec = 0.0;
+float delta_t_ = 4000;//0.5;
 
 //double convergence = ((CELL_SIZE_X*CELL_SIZE_Y)*Syinitial)/(Kinitial*4);
 
@@ -48,7 +45,7 @@ void saturedTransitionFunction(struct CALModel2D* ca, int i, int j)
     }
     double diffHead=0.0;
    
-    double sumFlows=0.0;cd 
+    double sumFlows=0.0;
     double tmpT = 0.0;
 
     for (int n=1; n<ca->sizeof_X; n++){
@@ -64,54 +61,14 @@ void saturedTransitionFunction(struct CALModel2D* ca, int i, int j)
     double area = CELL_SIZE_X*CELL_SIZE_Y;
     double ht1 = (sumFlows*delta_t_)/(calGet2Dr(ca, Sy, i, j)*area);
     calSet2Dr(ca, head, i, j, ht1+calGet2Dr(ca, head, i, j));
-
-    // double conv = (CELL_SIZE_X)/(SPESSORE*calGet2Dr(ca, K, i, j, k)*maxdiffhead);
-    //  if(i == 20 && j ==50){
-    //     printf("conv = %f\n", conv);
-    //     printf("maxdiffhead = %f\n", maxdiffhead);
-    //     printf("SPESSORE*calGet2Dr(ca, K, i, j, k)*maxdiffhead = %f\n", SPESSORE*calGet2Dr(ca, K, i, j, k)*maxdiffhead);
-    // }
-    // calSet2Dr(ca, convergence, i, j, k, conv);
     
 }
-
-void saturedSimulationSteering(struct CALModel2D* satured)
-{
-    // double min;
-    // min = calReductionComputeMin2Dr(satured, convergence);
-	// // printf("min = %f\n", min);
-    // if (min > 105.0)
-	// 	min = 105.0;
-
-	// delta_t = 0.95*min;
-	// delta_t_cum_prec = delta_t_cum;
-	// delta_t_cum += delta_t;
-
-    
-    // printf("delta_t_cum_prec = %f\n", delta_t_cum_prec);
-}
-
-CALbyte saturedSimulationStopCondition(struct CALModel2D* satured)
-{
-
-        // printf("ascii_output_time_step = %d\n", ascii_output_time_step);
-        if (delta_t_cum >= ascii_output_time_step && delta_t_cum_prec <= ascii_output_time_step)
-	    {
-                //printf("ascii_output_time_step ===================== %d\n", ascii_output_time_step);
-                return CAL_TRUE;
-        }
-
-        return CAL_FALSE;
-
-        
-}
-
 
 
 
 void saturedInit(struct CALModel2D* ca)
 {
-    for(int i = 0; i< ROWS;i++)
+for(int i = 0; i< ROWS;i++)
         for(int j = 0; j< COLS;j++)
             {        
               if( i<25 || i> 75 || j < 25 || j > 75) 
@@ -137,34 +94,34 @@ void saturedInit(struct CALModel2D* ca)
 }
 
 
-// CALreal* lastModFlow;
-// #define STRLEN 256
-// void calfLoadMatrix2Dr(CALreal* M, int rows, int columns, FILE* f)
-// {
-//   char str[STRLEN];
-//   int i, j;
+CALreal* lastModFlow;
+#define STRLEN 256
+void calfLoadMatrix2Dr(CALreal* M, int rows, int columns, FILE* f)
+{
+  char str[STRLEN];
+  int i, j;
 
-//   for (i=0; i<rows; i++)
-//     for (j=0; j<columns; j++){
-//       fscanf(f, "%s", str);
-//       calSetMatrixElement(M, columns, i, j, atof(str));
-//     }
-// }
+  for (i=0; i<rows; i++)
+    for (j=0; j<columns; j++){
+      fscanf(f, "%s", str);
+      calSetMatrixElement(M, columns, i, j, atof(str));
+    }
+}
 
-// CALbyte calLoadMatrix2Dr(CALreal* M, int rows, int columns, char* path)
-// {
-//   FILE *f = NULL;
-//   f = fopen(path, "r");
+CALbyte calLoadMatrix2Dr(CALreal* M, int rows, int columns, char* path)
+{
+  FILE *f = NULL;
+  f = fopen(path, "r");
 
-//   if ( !f )
-//     return CAL_FALSE;
+  if ( !f )
+    return CAL_FALSE;
 
-//   calfLoadMatrix2Dr(M, rows, columns, f);
+  calfLoadMatrix2Dr(M, rows, columns, f);
 
-//   fclose(f);
+  fclose(f);
 
-//   return CAL_TRUE;
-// }
+  return CAL_TRUE;
+}
 
 int factorial(int n)
 {
@@ -205,7 +162,7 @@ int main(){
     //         //printf("%d\t%d\t%f\n",i+1,j+1,lastModFlow[i*colsModFlow+j]);
     //    }
             
-    //     //printf(" \n");
+    // //     //printf(" \n");
     // }
 
     // for(int i = 0; i< ROWS;i++){
